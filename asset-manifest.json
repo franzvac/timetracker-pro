@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/timetracker-pro/static/css/main.2589eace.css",
+    "main.js": "/timetracker-pro/static/js/main.13c11ec6.js",
+    "static/js/453.f2eff700.chunk.js": "/timetracker-pro/static/js/453.f2eff700.chunk.js",
+    "index.html": "/timetracker-pro/index.html",
+    "main.2589eace.css.map": "/timetracker-pro/static/css/main.2589eace.css.map",
+    "main.13c11ec6.js.map": "/timetracker-pro/static/js/main.13c11ec6.js.map",
+    "453.f2eff700.chunk.js.map": "/timetracker-pro/static/js/453.f2eff700.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.2589eace.css",
+    "static/js/main.13c11ec6.js"
+  ]
+}
