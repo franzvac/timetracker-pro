@@ -1,6 +1,105 @@
 import React, { useState, useEffect } from 'react';
 import { Clock, Users, FileText, BarChart3, Download, AlertCircle, PlusCircle, Calendar, Edit, Trash2, X } from 'lucide-react';
 
+// All'inizio del file App.tsx, aggiungi questo componente logo
+const TimeTrackerLogo = ({ className = "h-8 w-8" }) => {
+  return (
+    <svg 
+      className={className}
+      viewBox="0 0 100 100" 
+      fill="none" 
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <defs>
+        <linearGradient id="clockGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#f97316" />
+          <stop offset="100%" stopColor="#ea580c" />
+        </linearGradient>
+        <linearGradient id="glowGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#fbbf24" stopOpacity="0.3" />
+          <stop offset="100%" stopColor="#f97316" stopOpacity="0.1" />
+        </linearGradient>
+        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+          <feMerge> 
+            <feMergeNode in="coloredBlur"/>
+            <feMergeNode in="SourceGraphic"/> 
+          </feMerge>
+        </filter>
+      </defs>
+      
+      {/* Outer Glow Circle */}
+      <circle 
+        cx="50" 
+        cy="50" 
+        r="48" 
+        fill="url(#glowGradient)" 
+        opacity="0.4"
+      />
+      
+      {/* Main Clock Face */}
+      <circle 
+        cx="50" 
+        cy="50" 
+        r="42" 
+        fill="url(#clockGradient)" 
+        stroke="#ffffff" 
+        strokeWidth="2"
+        filter="url(#glow)"
+      />
+      
+      {/* Inner Clock Face */}
+      <circle 
+        cx="50" 
+        cy="50" 
+        r="36" 
+        fill="rgba(0,0,0,0.1)" 
+        stroke="rgba(255,255,255,0.3)" 
+        strokeWidth="1"
+      />
+      
+      {/* Hour Markers */}
+      <g stroke="#ffffff" strokeWidth="2" strokeLinecap="round">
+        <line x1="50" y1="18" x2="50" y2="24" strokeWidth="3" />
+        <line x1="82" y1="50" x2="76" y2="50" strokeWidth="3" />
+        <line x1="50" y1="82" x2="50" y2="76" strokeWidth="3" />
+        <line x1="18" y1="50" x2="24" y2="50" strokeWidth="3" />
+        <line x1="71.2" y1="28.8" x2="67.9" y2="32.1" />
+        <line x1="71.2" y1="71.2" x2="67.9" y2="67.9" />
+        <line x1="28.8" y1="71.2" x2="32.1" y2="67.9" />
+        <line x1="28.8" y1="28.8" x2="32.1" y2="32.1" />
+      </g>
+      
+      {/* Clock Hands */}
+      <g stroke="#ffffff" strokeLinecap="round">
+        <line x1="50" y1="50" x2="42" y2="35" strokeWidth="4" opacity="0.9" />
+        <line x1="50" y1="50" x2="65" y2="32" strokeWidth="3" opacity="0.9" />
+        <line x1="50" y1="50" x2="32" y2="65" stroke="#fbbf24" strokeWidth="2" />
+      </g>
+      
+      {/* Center Dot */}
+      <circle cx="50" cy="50" r="4" fill="#ffffff" stroke="#f97316" strokeWidth="2" />
+      
+      {/* Progress Arc */}
+      <path
+        d="M 50 14 A 36 36 0 0 1 86 50"
+        fill="none"
+        stroke="#fbbf24"
+        strokeWidth="3"
+        strokeLinecap="round"
+        opacity="0.7"
+        strokeDasharray="5,3"
+      />
+      
+      <circle cx="50" cy="50" r="30" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
+    </svg>
+  );
+};
+
+
+
+
+
 const mockData = {
   clients: [
     { id: 1, name: 'Cliente A', contract: 650, hours_per_week: 16, color: '#f97316' },
@@ -532,47 +631,60 @@ const TimeTrackingApp: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-900">
-      {/* Navigation */}
-      <nav className="bg-gray-800 border-b border-gray-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex items-center">
-              <Clock className="h-8 w-8 text-orange-500 mr-3" />
-              <span className="text-xl font-bold text-white">TimeTracker Pro</span>
-            </div>
-            
-            <div className="flex items-center gap-4">
-              <button
-                onClick={() => setActiveTab('dashboard')}
-                className={`px-3 py-2 rounded text-sm font-medium transition-colors ${
-                  activeTab === 'dashboard' ? 'bg-orange-600 text-white' : 'text-gray-300 hover:text-white hover:bg-gray-700'
-                }`}
-              >
-                <BarChart3 size={16} className="inline mr-2" />
-                Dashboard
-              </button>
-              <button
-                onClick={() => setActiveTab('clients')}
-                className={`px-3 py-2 rounded text-sm font-medium transition-colors ${
-                  activeTab === 'clients' ? 'bg-orange-600 text-white' : 'text-gray-300 hover:text-white hover:bg-gray-700'
-                }`}
-              >
-                <Users size={16} className="inline mr-2" />
-                Clienti
-              </button>
-              <button
-                onClick={() => setActiveTab('tasks')}
-                className={`px-3 py-2 rounded text-sm font-medium transition-colors ${
-                  activeTab === 'tasks' ? 'bg-orange-600 text-white' : 'text-gray-300 hover:text-white hover:bg-gray-700'
-                }`}
-              >
-                <Calendar size={16} className="inline mr-2" />
-                Attività
-              </button>
-            </div>
-          </div>
-        </div>
-      </nav>
+      {/* Navigation - VERSIONE MIGLIORATA */}
+<nav className="bg-gray-800 border-b border-gray-700">
+  <div className="max-w-7xl mx-auto nav-container">
+    <div className="flex justify-between items-center h-16">
+      {/* Logo e Brand */}
+      <div className="nav-brand">
+        <TimeTrackerLogo className="h-8 w-8 flex-shrink-0" />
+        <span className="nav-title">
+          <span className="hidden sm:inline">TimeTracker Pro</span>
+          <span className="sm:hidden">TT Pro</span>
+        </span>
+      </div>
+      
+      {/* Navigation Buttons */}
+      <div className="nav-buttons">
+        <button
+          onClick={() => setActiveTab('dashboard')}
+          className={`nav-button ${
+            activeTab === 'dashboard' 
+              ? 'bg-orange-600 text-white' 
+              : 'text-gray-300 hover:text-white hover:bg-gray-700'
+          }`}
+        >
+          <BarChart3 size={16} className="nav-icon" />
+          <span className="nav-text">Dashboard</span>
+        </button>
+        
+        <button
+          onClick={() => setActiveTab('clients')}
+          className={`nav-button ${
+            activeTab === 'clients' 
+              ? 'bg-orange-600 text-white' 
+              : 'text-gray-300 hover:text-white hover:bg-gray-700'
+          }`}
+        >
+          <Users size={16} className="nav-icon" />
+          <span className="nav-text">Clienti</span>
+        </button>
+        
+        <button
+          onClick={() => setActiveTab('tasks')}
+          className={`nav-button ${
+            activeTab === 'tasks' 
+              ? 'bg-orange-600 text-white' 
+              : 'text-gray-300 hover:text-white hover:bg-gray-700'
+          }`}
+        >
+          <Calendar size={16} className="nav-icon" />
+          <span className="nav-text">Attività</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
