@@ -19,25 +19,25 @@ body {
 .bg-gray-800 { background-color: #1f2937; }
 .bg-gray-750 { background-color: #374151; }
 .bg-gray-700 { background-color: #374151; }
-.bg-gray-600 { background-color: #4b5563 !important; }
-.bg-orange-600 { background-color: #ea580c !important; }
+.bg-gray-600 { background-color: #4b5563; }
+.bg-orange-600 { background-color: #ea580c; }
 .bg-orange-700 { background-color: #c2410c; }
-.bg-red-600 { background-color: #dc2626 !important; }
+.bg-red-600 { background-color: #dc2626; }
 .bg-red-700 { background-color: #b91c1c; }
 .bg-blue-400 { background-color: #60a5fa; }
 .bg-blue-300 { background-color: #93c5fd; }
 
 /* Text Colors */
-.text-white { color: #ffffff !important; }
+.text-white { color: #ffffff; }
 .text-gray-50 { color: #f9fafb; }
 .text-gray-300 { color: #d1d5db; }
 .text-gray-400 { color: #9ca3af; }
 .text-orange-200 { color: #fed7aa; }
 .text-orange-500 { color: #f97316; }
-.text-blue-400 { color: #60a5fa !important; }
-.text-blue-300 { color: #93c5fd !important; }
-.text-red-400 { color: #f87171 !important; }
-.text-red-300 { color: #fca5a5 !important; }
+.text-blue-400 { color: #60a5fa; }
+.text-blue-300 { color: #93c5fd; }
+.text-red-400 { color: #f87171; }
+.text-red-300 { color: #fca5a5; }
 
 /* Border Colors */
 .border { border-width: 1px; }
@@ -147,193 +147,722 @@ body {
 .uppercase { text-transform: uppercase; }
 
 /* Navigation */
-.max-w-7xl { max-width: 80rem; }
-.mx-auto { margin-left: auto; margin-right: auto; }
+.max-w-7xl {
+  max-width: 80rem;
+}
 
-/* Navigation Responsive */
-.nav-container { padding: 0 1rem; }
-.nav-brand { display: flex; align-items: center; gap: 0.75rem; min-width: 0; }
-.nav-title { font-size: 1.125rem; font-weight: 700; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.nav-buttons { display: flex; align-items: center; gap: 0.25rem; flex-shrink: 0; }
-.nav-button { padding: 0.375rem 0.75rem; border-radius: 0.375rem; font-size: 0.875rem; font-weight: 500; transition: all 0.2s ease; display: flex; align-items: center; gap: 0.375rem; white-space: nowrap; color: #d1d5db !important; background-color: transparent !important; border: 1px solid transparent !important; }
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.sm\:px-6 {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.lg\:px-8 {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
 
 /* Buttons */
-.btn { display: inline-flex; align-items: center; justify-content: center; padding: 0.5rem 1rem; border-radius: 0.5rem; border: none; cursor: pointer; font-weight: 500; text-decoration: none; transition: all 0.2s ease; }
-.btn:hover { transform: translateY(-1px); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); }
-.btn:active { transform: translateY(0); }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
 
-/* Button Colors */
-.btn-primary, .bg-orange-600 { background-color: #ea580c !important; color: #ffffff !important; border: 1px solid #ea580c !important; }
-.btn-primary:hover, .bg-orange-600:hover, .hover\:bg-orange-700:hover { background-color: #c2410c !important; color: #ffffff !important; border-color: #c2410c !important; }
-.btn-secondary, .bg-gray-600:hover, .bg-gray-700:hover { background-color: #4b5563 !important; color: #ffffff !important; border: 1px solid #4b5563 !important; }
-.btn-secondary:hover, .hover\:bg-gray-600:hover, .hover\:bg-gray-700:hover { background-color: #374151 !important; color: #ffffff !important; border-color: #374151 !important; }
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
 
-/* Navigation Button States */
-.nav-button:hover { color: #ffffff !important; background-color: #374151 !important; border-color: #4b5563 !important; }
-.nav-button.bg-orange-600 { background-color: #ea580c !important; color: #ffffff !important; border-color: #ea580c !important; }
-.nav-button.bg-orange-600:hover { background-color: #c2410c !important; color: #ffffff !important; border-color: #c2410c !important; }
+.btn:active {
+  transform: translateY(0);
+}
 
 /* Form Controls */
-input, select, textarea { width: 100%; padding: 0.5rem 0.75rem; background-color: #374151; border: 1px solid #4b5563; border-radius: 0.5rem; color: white; font-size: 0.875rem; transition: border-color 0.2s, box-shadow 0.2s; }
-input:focus, select:focus, textarea:focus { outline: none; border-color: #f97316; box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2); }
-input::placeholder, textarea::placeholder { color: #9ca3af; }
-.form-input, .form-select, .form-textarea { width: 100%; padding: 0.5rem 0.75rem; background-color: #374151; border: 1px solid #4b5563; border-radius: 0.5rem; color: white; }
+input, select, textarea {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  background-color: #374151;
+  border: 1px solid #4b5563;
+  border-radius: 0.5rem;
+  color: white;
+  font-size: 0.875rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: #f97316;
+  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2);
+}
+
+input::placeholder, textarea::placeholder {
+  color: #9ca3af;
+}
 
 /* Tables */
-table { width: 100%; border-collapse: collapse; }
-table th { padding: 0.75rem 1.5rem; background-color: #374151; text-align: left; font-size: 0.875rem; font-weight: 500; color: #d1d5db; text-transform: uppercase; letter-spacing: 0.05em; }
-table td { padding: 1rem 1.5rem; border-bottom: 1px solid #374151; font-size: 0.875rem; }
-table tbody tr:hover { background-color: #374151; }
-.table { width: 100%; border-collapse: collapse; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table th {
+  padding: 0.75rem 1.5rem;
+  background-color: #374151;
+  text-align: left;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #d1d5db;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+table td {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #374151;
+  font-size: 0.875rem;
+}
+
+table tbody tr:hover {
+  background-color: #374151;
+}
 
 /* Cards */
-.card { background-color: #1f2937; border-radius: 0.5rem; border: 1px solid #374151; transition: box-shadow 0.2s; }
-.card:hover { box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); transform: translateY(-2px); border-color: #6b7280; }
+.card {
+  background-color: #1f2937;
+  border-radius: 0.5rem;
+  border: 1px solid #374151;
+  transition: box-shadow 0.2s;
+}
+
+.card:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 
 /* Progress Bars */
-.progress-bar { width: 100%; background-color: #374151; border-radius: 9999px; overflow: hidden; }
-.progress-fill { height: 100%; transition: width 0.5s ease; border-radius: 9999px; }
+.progress-bar {
+  width: 100%;
+  background-color: #374151;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  transition: width 0.5s ease;
+  border-radius: 9999px;
+}
 
 /* Modals */
-.modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center; padding: 1rem; z-index: 50; }
-.modal-content { background-color: #1f2937; border-radius: 0.5rem; width: 100%; max-width: 28rem; max-height: 90vh; overflow-y: auto; }
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 50;
+}
+
+.modal-content {
+  background-color: #1f2937;
+  border-radius: 0.5rem;
+  width: 100%;
+  max-width: 28rem;
+  max-height: 90vh;
+  overflow-y: auto;
+}
 
 /* Animations */
-.animate-spin { animation: spin 1s linear infinite; }
-@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-.transition-colors { transition-property: background-color, border-color, color, fill, stroke; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
-.transition-all { transition-property: all; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.transition-colors {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.duration-200 {
+  transition-duration: 200ms;
+}
+
+.duration-300 {
+  transition-duration: 300ms;
+}
+
+.duration-500 {
+  transition-duration: 500ms;
+}
+
+.ease-out {
+  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+}
 
 /* Hover Effects */
-.hover\:bg-orange-700:hover { background-color: #c2410c !important; }
-.hover\:bg-gray-700:hover { background-color: #374151 !important; }
-.hover\:bg-gray-600:hover { background-color: #4b5563 !important; }
-.hover\:bg-red-700:hover { background-color: #b91c1c !important; }
-.hover\:text-blue-300:hover { color: #93c5fd !important; background-color: rgba(59, 130, 246, 0.1) !important; border-radius: 0.375rem; padding: 0.25rem; }
-.hover\:text-red-300:hover { color: #fca5a5 !important; background-color: rgba(239, 68, 68, 0.1) !important; border-radius: 0.375rem; padding: 0.25rem; }
+.hover\:bg-orange-700:hover { background-color: #c2410c; }
+.hover\:bg-gray-700:hover { background-color: #374151; }
+.hover\:bg-gray-600:hover { background-color: #4b5563; }
+.hover\:bg-red-700:hover { background-color: #b91c1c; }
+.hover\:text-blue-300:hover { color: #93c5fd; }
+.hover\:text-red-300:hover { color: #fca5a5; }
 .hover\:text-gray-300:hover { color: #d1d5db; }
 .hover\:border-gray-600:hover { border-color: #4b5563; }
 .hover\:shadow-lg:hover { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
 
 /* Focus */
-.focus\:ring-2:focus { box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.5); }
-.focus\:ring-orange-500:focus { --tw-ring-color: #f97316; }
-.focus\:border-transparent:focus { border-color: transparent; }
-
-/* === MOBILE RESPONSIVE LAYOUT === */
-
-/* Mobile: Nascondi tabelle, mostra cards */
-@media (max-width: 768px) {
-  .mobile-table-hidden { display: none !important; }
-  .mobile-cards-container { display: block; }
-  
-  /* Navigation Mobile */
-  .nav-container { padding: 0 0.75rem; }
-  .nav-title { font-size: 1rem; max-width: 120px; }
-  .nav-button { padding: 0.375rem 0.5rem; font-size: 0.75rem; gap: 0.25rem; }
-  .nav-button .nav-icon { width: 14px; height: 14px; }
-  .nav-button .nav-text { display: none; }
-  
-  /* Cards Mobile */
-  .mobile-task-card, .mobile-client-card { 
-    background-color: #1f2937; 
-    border: 1px solid #374151; 
-    border-radius: 0.75rem; 
-    padding: 1rem; 
-    margin-bottom: 1rem; 
-    position: relative; 
-    transition: all 0.2s ease; 
-  }
-  
-  .mobile-task-card:hover, .mobile-client-card:hover { 
-    transform: translateY(-2px); 
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); 
-    border-color: #4b5563; 
-  }
-  
-  /* Card Header */
-  .mobile-card-header { 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-    margin-bottom: 0.75rem; 
-    padding-bottom: 0.75rem; 
-    border-bottom: 1px solid #374151; 
-  }
-  
-  .mobile-card-client { display: flex; align-items: center; gap: 0.5rem; flex: 1; }
-  .mobile-card-client-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
-  .mobile-card-client-name { font-weight: 600; color: #ffffff; font-size: 0.9rem; }
-  .mobile-card-date { font-size: 0.8rem; color: #9ca3af; font-weight: 500; }
-  .mobile-card-contract { color: #10b981; font-weight: 600; font-size: 0.875rem; }
-  
-  /* Card Body */
-  .mobile-card-body { margin-bottom: 1rem; }
-  .mobile-card-title { font-weight: 600; color: #ffffff; font-size: 1rem; margin-bottom: 0.5rem; }
-  .mobile-card-description { color: #d1d5db; font-size: 0.875rem; line-height: 1.4; margin-bottom: 0.75rem; }
-  
-  /* Card Info */
-  .mobile-card-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-  .mobile-card-hours { background-color: #374151; color: #ffffff; padding: 0.25rem 0.75rem; border-radius: 1rem; font-weight: 600; font-size: 0.875rem; }
-  .mobile-card-progress { flex: 1; margin: 0 1rem; }
-  .mobile-card-progress-bar { width: 100%; height: 4px; background-color: #374151; border-radius: 2px; overflow: hidden; }
-  .mobile-card-progress-fill { height: 100%; transition: width 0.3s ease; border-radius: 2px; }
-  .mobile-card-progress-text { font-size: 0.75rem; color: #9ca3af; text-align: center; margin-top: 0.25rem; }
-  
-  /* Card Actions */
-  .mobile-card-actions { display: flex; justify-content: flex-end; gap: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #374151; }
-  .mobile-card-action { padding: 0.5rem; border-radius: 0.5rem; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; min-width: 40px; min-height: 40px; cursor: pointer; }
-  .mobile-card-action:hover { transform: scale(1.1); }
-  .mobile-card-action.edit { background-color: rgba(59, 130, 246, 0.1); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.2); }
-  .mobile-card-action.edit:hover { background-color: rgba(59, 130, 246, 0.2); color: #93c5fd; }
-  .mobile-card-action.delete { background-color: rgba(239, 68, 68, 0.1); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.2); }
-  .mobile-card-action.delete:hover { background-color: rgba(239, 68, 68, 0.2); color: #fca5a5; }
-  .mobile-card-action.report { background-color: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.2); flex: 1; max-width: 120px; gap: 0.5rem; }
-  .mobile-card-action.report:hover { background-color: rgba(16, 185, 129, 0.2); color: #34d399; }
-  
-  /* Card Badge */
-  .mobile-card-badge { position: absolute; top: 1rem; right: 1rem; padding: 0.25rem 0.5rem; border-radius: 1rem; font-size: 0.75rem; font-weight: 600; }
-  .mobile-card-badge.completed { background-color: rgba(16, 185, 129, 0.2); color: #10b981; }
-  .mobile-card-badge.in-progress { background-color: rgba(249, 115, 22, 0.2); color: #f97316; }
-  .mobile-card-badge.warning { background-color: rgba(245, 158, 11, 0.2); color: #f59e0b; }
-  
-  /* Utilities */
-  .text-truncate-mobile { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; }
-  
-  /* Modal Mobile */
-  .modal-content { margin: 1rem; max-height: 90vh; width: calc(100% - 2rem); }
-  .modal-overlay { padding: 1rem; }
+.focus\:ring-2:focus {
+  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.5);
 }
 
-/* Desktop: Mostra tabelle, nascondi cards */
-@media (min-width: 769px) {
-  .mobile-cards-container { display: none; }
-  .mobile-table-hidden { display: table !important; }
-  
-  /* Navigation Desktop */
-  .sm\:px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
-  .lg\:px-8 { padding-left: 2rem; padding-right: 2rem; }
-  .sm\:hidden { display: none; }
-  .sm\:block { display: block; }
-  .sm\:inline { display: inline; }
-  
-  /* Table Improvements */
-  .table .actions-column { width: 100px; text-align: center; }
-  .table .actions-column .flex { justify-content: center; gap: 0.75rem; }
-  .table-progress { display: flex; align-items: center; gap: 0.75rem; }
-  .table-progress-bar { flex: 1; height: 6px; background-color: #374151; border-radius: 3px; overflow: hidden; }
-  .table-progress-fill { height: 100%; transition: width 0.3s ease; border-radius: 3px; }
-  .table-progress-text { font-size: 0.75rem; color: #9ca3af; min-width: 35px; text-align: right; }
+.focus\:ring-orange-500:focus {
+  --tw-ring-color: #f97316;
 }
 
-/* Tablet breakpoint */
-@media (max-width: 480px) {
-  .nav-title { display: none; }
-  .nav-button { padding: 0.5rem; }
+.focus\:border-transparent:focus {
+  border-color: transparent;
 }
 
-/* Additional responsive */
+/* Responsive Design */
 @media (max-width: 640px) {
   .sm\:hidden { display: none; }
   .sm\:block { display: block; }
+  
+  .modal-content {
+    margin: 0.5rem;
+    max-height: 90vh;
+  }
+  
+  table th,
+  table td {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+  }
 }
+
+@media (min-width: 640px) {
+  .sm\:px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+}
+
+@media (min-width: 1024px) {
+  .lg\:px-8 { padding-left: 2rem; padding-right: 2rem; }
+}
+/* Aggiungi queste regole al tuo src/index.css per migliorare contrasti e responsive */
+
+/* === MIGLIORAMENTI BOTTONI E CONTRASTI === */
+
+/* Bottoni principali - Contrasti migliorati */
+.btn-primary,
+.bg-orange-600 {
+  background-color: #ea580c !important;
+  color: #ffffff !important;
+  border: 1px solid #ea580c;
+}
+
+.btn-primary:hover,
+.bg-orange-600:hover,
+.hover\:bg-orange-700:hover {
+  background-color: #c2410c !important;
+  color: #ffffff !important;
+  border-color: #c2410c;
+  transform: translateY(-1px);
+}
+
+/* Bottoni secondari - Contrasti migliorati */
+.btn-secondary,
+.bg-gray-600,
+.bg-gray-700 {
+  background-color: #4b5563 !important;
+  color: #ffffff !important;
+  border: 1px solid #4b5563;
+}
+
+.btn-secondary:hover,
+.bg-gray-600:hover,
+.bg-gray-700:hover,
+.hover\:bg-gray-600:hover,
+.hover\:bg-gray-700:hover {
+  background-color: #374151 !important;
+  color: #ffffff !important;
+  border-color: #374151;
+}
+
+/* Bottoni di pericolo */
+.bg-red-600 {
+  background-color: #dc2626 !important;
+  color: #ffffff !important;
+}
+
+.bg-red-600:hover,
+.hover\:bg-red-700:hover {
+  background-color: #b91c1c !important;
+  color: #ffffff !important;
+}
+
+/* Fix per bottoni icona */
+.btn-icon,
+.text-blue-400,
+.text-red-400 {
+  transition: all 0.2s ease;
+}
+
+.text-blue-400:hover,
+.text-blue-300:hover {
+  color: #93c5fd !important;
+  background-color: rgba(59, 130, 246, 0.1);
+  border-radius: 0.375rem;
+}
+
+.text-red-400:hover,
+.text-red-300:hover {
+  color: #fca5a5 !important;
+  background-color: rgba(239, 68, 68, 0.1);
+  border-radius: 0.375rem;
+}
+
+/* === MIGLIORAMENTI RESPONSIVE === */
+
+/* Navigation - Mobile First */
+.nav-container {
+  padding: 0 1rem;
+}
+
+/* Logo e titolo responsive */
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0; /* Permette shrinking */
+}
+
+.nav-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Navigation buttons - Responsive */
+.nav-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-shrink: 0;
+}
+
+.nav-button {
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  white-space: nowrap;
+}
+
+/* Responsive breakpoints */
+@media (max-width: 640px) {
+  .nav-container {
+    padding: 0 0.75rem;
+  }
+  
+  .nav-title {
+    font-size: 1rem;
+    max-width: 120px;
+  }
+  
+  .nav-button {
+    padding: 0.375rem 0.5rem;
+    font-size: 0.75rem;
+    gap: 0.25rem;
+  }
+  
+  .nav-button .nav-icon {
+    width: 14px;
+    height: 14px;
+  }
+  
+  .nav-button .nav-text {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-title {
+    display: none;
+  }
+  
+  .nav-button {
+    padding: 0.5rem;
+  }
+  
+  .nav-button .nav-text {
+    display: none;
+  }
+}
+
+/* === COMPONENTI MIGLIORATI === */
+
+/* Cards hover effects */
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  border-color: #6b7280;
+}
+
+/* Tables responsive */
+@media (max-width: 768px) {
+  .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .table th,
+  .table td {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+  }
+  
+  .table th:first-child,
+  .table td:first-child {
+    position: sticky;
+    left: 0;
+    background-color: inherit;
+    z-index: 10;
+  }
+}
+
+/* Modal responsive */
+@media (max-width: 640px) {
+  .modal-content {
+    margin: 1rem;
+    max-height: 90vh;
+    width: calc(100% - 2rem);
+  }
+  
+  .modal-overlay {
+    padding: 1rem;
+  }
+}
+
+/* Progress bars */
+.progress-bar {
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-fill {
+  position: relative;
+}
+
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* === ACCESSIBILITÀ === */
+
+/* Focus states migliorati */
+.focus-ring:focus,
+button:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.5);
+  border-color: #f97316;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .bg-gray-800 { 
+    background-color: #000000;
+    border: 1px solid #ffffff;
+  }
+  
+  .bg-gray-700 { 
+    background-color: #1a1a1a;
+  }
+  
+  .text-gray-300,
+  .text-gray-400 {
+    color: #ffffff;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .progress-fill::after {
+    animation: none;
+  }
+}
+
+/* === UTILITIES AGGIUNTIVE === */
+
+/* Text truncation */
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Scrollbar personalizzata per mobile */
+@media (max-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+}
+
+/* Loading states */
+.loading-skeleton {
+  background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Notification improvements */
+.notification {
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Glassmorphism effect per modal */
+.modal-content {
+  backdrop-filter: blur(16px);
+  background-color: rgba(31, 41, 55, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+/* === FIX SPECIFICO BOTTONI NAVIGAZIONE === */
+/* Aggiungi questo alla fine del tuo src/index.css */
+
+/* Bottoni di navigazione - Selettori specifici e forti */
+nav button,
+.nav-button,
+nav .nav-button,
+button[class*="nav-button"] {
+  color: #d1d5db !important;
+  background-color: transparent !important;
+  transition: all 0.2s ease !important;
+  border: 1px solid transparent !important;
+}
+
+/* Stato hover per bottoni navigazione inattivi */
+nav button:hover,
+.nav-button:hover,
+nav .nav-button:hover,
+button[class*="nav-button"]:hover {
+  color: #ffffff !important;
+  background-color: #374151 !important;
+  border-color: #4b5563 !important;
+}
+
+/* Bottone navigazione attivo (arancione) */
+nav button.bg-orange-600,
+.nav-button.bg-orange-600,
+nav .nav-button.bg-orange-600,
+button[class*="nav-button"][class*="bg-orange-600"],
+nav button[class*="bg-orange"],
+.nav-button[class*="bg-orange"] {
+  background-color: #ea580c !important;
+  color: #ffffff !important;
+  border-color: #ea580c !important;
+}
+
+/* Hover per bottone navigazione attivo */
+nav button.bg-orange-600:hover,
+.nav-button.bg-orange-600:hover,
+nav .nav-button.bg-orange-600:hover,
+button[class*="nav-button"][class*="bg-orange-600"]:hover {
+  background-color: #c2410c !important;
+  color: #ffffff !important;
+  border-color: #c2410c !important;
+}
+
+/* === FIX BOTTONI MODALI E FORM === */
+
+/* Bottoni primari nei modali */
+.modal-content button,
+.modal-content .btn-primary,
+button[class*="bg-orange-600"],
+button[class*="btn-primary"] {
+  background-color: #ea580c !important;
+  color: #ffffff !important;
+  border: 1px solid #ea580c !important;
+}
+
+.modal-content button:hover,
+.modal-content .btn-primary:hover,
+button[class*="bg-orange-600"]:hover,
+button[class*="btn-primary"]:hover {
+  background-color: #c2410c !important;
+  color: #ffffff !important;
+  border-color: #c2410c !important;
+}
+
+/* Bottoni secondari nei modali */
+.modal-content button[class*="bg-gray"],
+.modal-content .btn-secondary,
+button[class*="bg-gray-600"],
+button[class*="bg-gray-700"],
+button[class*="btn-secondary"] {
+  background-color: #4b5563 !important;
+  color: #ffffff !important;
+  border: 1px solid #4b5563 !important;
+}
+
+.modal-content button[class*="bg-gray"]:hover,
+.modal-content .btn-secondary:hover,
+button[class*="bg-gray-600"]:hover,
+button[class*="bg-gray-700"]:hover,
+button[class*="btn-secondary"]:hover {
+  background-color: #374151 !important;
+  color: #ffffff !important;
+  border-color: #374151 !important;
+}
+
+/* === FIX BOTTONI CARDS === */
+
+/* Bottoni "Genera Report" nelle cards */
+.card button,
+.bg-gray-800 button,
+button[class*="bg-orange-600"] {
+  background-color: #ea580c !important;
+  color: #ffffff !important;
+  border: 1px solid #ea580c !important;
+}
+
+.card button:hover,
+.bg-gray-800 button:hover,
+button[class*="bg-orange-600"]:hover {
+  background-color: #c2410c !important;
+  color: #ffffff !important;
+  border-color: #c2410c !important;
+}
+
+/* === FIX BOTTONI TABELLA === */
+
+/* Bottoni edit e delete nelle tabelle */
+button[class*="text-blue"],
+.text-blue-400,
+.text-blue-300 {
+  color: #60a5fa !important;
+  background-color: transparent !important;
+  padding: 0.25rem !important;
+  border-radius: 0.375rem !important;
+  transition: all 0.2s ease !important;
+}
+
+button[class*="text-blue"]:hover,
+.text-blue-400:hover,
+.text-blue-300:hover {
+  color: #93c5fd !important;
+  background-color: rgba(59, 130, 246, 0.1) !important;
+}
+
+button[class*="text-red"],
+.text-red-400,
+.text-red-300 {
+  color: #f87171 !important;
+  background-color: transparent !important;
+  padding: 0.25rem !important;
+  border-radius: 0.375rem !important;
+  transition: all 0.2s ease !important;
+}
+
+button[class*="text-red"]:hover,
+.text-red-400:hover,
+.text-red-300:hover {
+  color: #fca5a5 !important;
+  background-color: rgba(239, 68, 68, 0.1) !important;
+}
+
+/* === OVERRIDE UNIVERSALE === */
+
+/* Catch-all per tutti i bottoni problematici */
+button:not([class*="text-"]):not([class*="bg-transparent"]) {
+  color: #ffffff !important;
+}
+
+/* Reset di eventuali stili inline problematici */
+button[style*="background-color"]:hover {
+  color: #ffffff !important;
+  border: 1px solid currentColor !important;
+}
+
+/* === DEBUG MODE === */
+/* Decommenta queste righe per vedere tutti i bottoni */
+/*
+button {
+  outline: 2px solid #fbbf24 !important;
+  position: relative;
+}
+
+button::before {
+  content: attr(class);
+  position: absolute;
+  top: -20px;
+  left: 0;
+  font-size: 10px;
+  background: #000;
+  color: #fff;
+  padding: 2px;
+  z-index: 1000;
+}
+*/
