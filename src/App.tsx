@@ -427,461 +427,6 @@ const TimeTrackingApp: React.FC = () => {
           className="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
         >
           <PlusCircle size={20} />
-          <span className="hidden sm:inline">Aggiungi Attività</span>
-          <span className="sm:hidden">Aggiungi</span>
-        </button>
-      </div>
-
-      {/* Desktop Table */}
-      <div className="mobile-table-hidden bg-gray-800 rounded-lg overflow-hidden">
-        <table className="table w-full">
-          <thead>
-            <tr>
-              <th>Data</th>
-              <th>Cliente</th>
-              <th>Attività</th>
-              <th>Ore</th>
-              <th className="actions-column">Azioni</th>
-            </tr>
-          </thead>
-          <tbody>
-            {tasks.map(task => {
-              const client = clients.find(c => c.id === task.client_id);
-              return (
-                <tr key={task.id}>
-                  <td className="text-gray-300">{new Date(task.date).toLocaleDateString('it-IT')}</td>
-                  <td className="text-white flex items-center gap-3">
-                    <div className="w-4 h-4 rounded-full" style={{ backgroundColor: client?.color }}></div>
-                    {client?.name}
-                  </td>
-                  <td>
-                    <div className="text-white font-medium">{task.title}</div>
-                    <div className="text-gray-400 text-sm mt-1">{task.description}</div>
-                  </td>
-                  <td className="text-gray-300 font-medium">{task.hours}h</td>
-                  <td className="actions-column">
-                    <div className="flex gap-2 justify-center">
-                      <button
-                        onClick={() => {
-                          setEditingTask(task);
-                          setTaskForm({
-                            client_id: task.client_id.toString(),
-                            title: task.title,
-                            hours: task.hours.toString(),
-                            date: task.date,
-                            description: task.description
-                          });
-                          setShowTaskForm(true);
-                        }}
-                        className="text-blue-400 hover:text-blue-300 p-2 hover:bg-blue-400 hover:bg-opacity-10 rounded-lg transition-all"
-                        title="Modifica attività"
-                      >
-                        <Edit size={16} />
-                      </button>
-                      <button
-                        onClick={() => deleteTask(task.id)}
-                        className="text-red-400 hover:text-red-300 p-2 hover:bg-red-400 hover:bg-opacity-10 rounded-lg transition-all"
-                        title="Elimina attività"
-                      >
-                        <Trash2 size={16} />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Mobile Cards */}
-      <div className="mobile-cards-container">
-        {tasks.map(task => {
-          const client = clients.find(c => c.id === task.client_id);
-          return (
-            <div key={task.id} className="mobile-task-card">
-              {/* Header */}
-              <div className="mobile-card-header">
-                <div className="mobile-card-client">
-                  <div 
-                    className="mobile-card-client-dot" 
-                    style={{ backgroundColor: client?.color }}
-                  ></div>
-                  <span className="mobile-card-client-name">{client?.name}</span>
-                </div>
-                <span className="mobile-card-date">
-                  {new Date(task.date).toLocaleDateString('it-IT')}
-                </span>
-              </div>
-
-              {/* Body */}
-              <div className="mobile-card-body">
-                <h3 className="mobile-card-title">{task.title}</h3>
-                {task.description && (
-                  <p className="mobile-card-description text-truncate-mobile">
-                    {task.description}
-                  </p>
-                )}
-              </div>
-
-              {/* Info */}
-              <div className="mobile-card-info">
-                <div className="mobile-card-hours">
-                  {task.hours}h
-                </div>
-              </div>
-
-              {/* Actions */}
-              <div className="mobile-card-actions">
-                <button
-                  onClick={() => {
-                    setEditingTask(task);
-                    setTaskForm({
-                      client_id: task.client_id.toString(),
-                      title: task.title,
-                      hours: task.hours.toString(),
-                      date: task.date,
-                      description: task.description
-                    });
-                    setShowTaskForm(true);
-                  }}
-                  className="mobile-card-action edit"
-                  title="Modifica"
-                >
-                  <Edit size={18} />
-                </button>
-                <button
-                  onClick={() => deleteTask(task.id)}
-                  className="mobile-card-action delete"
-                  title="Elimina"
-                >
-                  <Trash2 size={18} />
-                </button>
-              </div>
-            </div>
-          );
-        })}
-        
-        {tasks.length === 0 && (
-          <div className="text-center py-12 text-gray-400">
-            <Calendar size={48} className="mx-auto mb-4 opacity-50" />
-            <p className="text-lg font-medium mb-2">Nessuna attività registrata</p>
-            <p className="text-sm">Inizia aggiungendo la tua prima attività</p>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-
-  return (
-    <div className="min-h-screen bg-gray-900">
-      {/* Navigation */}
-      <nav className="bg-gray-800 border-b border-gray-700">
-        <div className="max-w-7xl mx-auto nav-container">
-          <div className="flex justify-between items-center h-16">
-            {/* Logo e Brand */}
-            <div className="nav-brand">
-              <TimeTrackerLogo className="h-8 w-8 flex-shrink-0" />
-              <span className="nav-title">
-                <span className="hidden sm:inline">TimeTracker Pro</span>
-                <span className="sm:hidden">TT Pro</span>
-              </span>
-            </div>
-            
-            {/* Navigation Buttons */}
-            <div className="nav-buttons">
-              <button
-                onClick={() => setActiveTab('dashboard')}
-                className={`nav-button ${
-                  activeTab === 'dashboard' 
-                    ? 'bg-orange-600 text-white' 
-                    : 'text-gray-300 hover:text-white hover:bg-gray-700'
-                }`}
-              >
-                <BarChart3 size={16} className="nav-icon" />
-                <span className="nav-text">Dashboard</span>
-              </button>
-              
-              <button
-                onClick={() => setActiveTab('clients')}
-                className={`nav-button ${
-                  activeTab === 'clients' 
-                    ? 'bg-orange-600 text-white' 
-                    : 'text-gray-300 hover:text-white hover:bg-gray-700'
-                }`}
-              >
-                <Users size={16} className="nav-icon" />
-                <span className="nav-text">Clienti</span>
-              </button>
-              
-              <button
-                onClick={() => setActiveTab('tasks')}
-                className={`nav-button ${
-                  activeTab === 'tasks' 
-                    ? 'bg-orange-600 text-white' 
-                    : 'text-gray-300 hover:text-white hover:bg-gray-700'
-                }`}
-              >
-                <Calendar size={16} className="nav-icon" />
-                <span className="nav-text">Attività</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {activeTab === 'dashboard' && <Dashboard />}
-        {activeTab === 'clients' && <Clients />}
-        {activeTab === 'tasks' && <Tasks />}
-      </main>
-
-      {/* Modal Form Clienti */}
-      {showClientForm && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <div className="flex justify-between items-center p-6 border-b border-gray-700">
-              <h3 className="text-lg font-semibold text-white">
-                {editingClient ? 'Modifica Cliente' : 'Nuovo Cliente'}
-              </h3>
-              <button
-                onClick={() => {
-                  setShowClientForm(false);
-                  setEditingClient(null);
-                  setClientForm({ name: '', contract: '', hours_per_week: '', color: '#f97316' });
-                }}
-                className="text-gray-400 hover:text-gray-300"
-              >
-                <X size={20} />
-              </button>
-            </div>
-            
-            <div className="p-6 space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-1">Nome Cliente</label>
-                <input
-                  type="text"
-                  value={clientForm.name}
-                  onChange={(e) => setClientForm({ ...clientForm, name: e.target.value })}
-                  className="form-input"
-                  placeholder="Nome del cliente"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-1">Contratto Mensile (€)</label>
-                <input
-                  type="number"
-                  value={clientForm.contract}
-                  onChange={(e) => setClientForm({ ...clientForm, contract: e.target.value })}
-                  className="form-input"
-                  placeholder="650"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-1">Ore per Settimana</label>
-                <input
-                  type="number"
-                  step="0.5"
-                  value={clientForm.hours_per_week}
-                  onChange={(e) => setClientForm({ ...clientForm, hours_per_week: e.target.value })}
-                  className="form-input"
-                  placeholder="16"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-1">Colore Identificativo</label>
-                <input
-                  type="color"
-                  value={clientForm.color}
-                  onChange={(e) => setClientForm({ ...clientForm, color: e.target.value })}
-                  className="w-full h-10 bg-gray-700 border border-gray-600 rounded-lg"
-                />
-              </div>
-              
-              <div className="flex gap-3 pt-4">
-                <button
-                  onClick={handleClientSubmit}
-                  className="flex-1 btn-primary"
-                >
-                  {editingClient ? 'Aggiorna Cliente' : 'Crea Cliente'}
-                </button>
-                <button
-                  onClick={() => {
-                    setShowClientForm(false);
-                    setEditingClient(null);
-                    setClientForm({ name: '', contract: '', hours_per_week: '', color: '#f97316' });
-                  }}
-                  className="px-4 py-2 btn-secondary"
-                >
-                  Annulla
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Modal Form Task */}
-      {showTaskForm && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <div className="flex justify-between items-center p-6 border-b border-gray-700">
-              <h3 className="text-lg font-semibold text-white">
-                {editingTask ? 'Modifica Attività' : 'Nuova Attività'}
-              </h3>
-              <button
-                onClick={() => {
-                  setShowTaskForm(false);
-                  setEditingTask(null);
-                  setTaskForm({ client_id: '', title: '', hours: '', date: '', description: '' });
-                }}
-                className="text-gray-400 hover:text-gray-300"
-              >
-                <X size={20} />
-              </button>
-            </div>
-            
-            <div className="p-6 space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-1">Cliente</label>
-                <select
-                  value={taskForm.client_id}
-                  onChange={(e) => setTaskForm({ ...taskForm, client_id: e.target.value })}
-                  className="form-select"
-                >
-                  <option value="">Seleziona cliente</option>
-                  {clients.map(client => (
-                    <option key={client.id} value={client.id}>{client.name}</option>
-                  ))}
-                </select>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-1">Titolo Attività</label>
-                <input
-                  type="text"
-                  value={taskForm.title}
-                  onChange={(e) => setTaskForm({ ...taskForm, title: e.target.value })}
-                  className="form-input"
-                  placeholder="Sviluppo, Meeting, Analisi..."
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-1">Ore Lavorate</label>
-                <input
-                  type="number"
-                  step="0.25"
-                  value={taskForm.hours}
-                  onChange={(e) => setTaskForm({ ...taskForm, hours: e.target.value })}
-                  className="form-input"
-                  placeholder="4.5"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-1">Data</label>
-                <input
-                  type="date"
-                  value={taskForm.date}
-                  onChange={(e) => setTaskForm({ ...taskForm, date: e.target.value })}
-                  className="form-input"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-1">Descrizione (opzionale)</label>
-                <textarea
-                  value={taskForm.description}
-                  onChange={(e) => setTaskForm({ ...taskForm, description: e.target.value })}
-                  rows={3}
-                  className="form-textarea"
-                  placeholder="Dettagli dell'attività svolta..."
-                />
-              </div>
-              
-              <div className="flex gap-3 pt-4">
-                <button
-                  onClick={handleTaskSubmit}
-                  className="flex-1 btn-primary"
-                >
-                  {editingTask ? 'Aggiorna Attività' : 'Crea Attività'}
-                </button>
-                <button
-                  onClick={() => {
-                    setShowTaskForm(false);
-                    setEditingTask(null);
-                    setTaskForm({ client_id: '', title: '', hours: '', date: '', description: '' });
-                  }}
-                  className="px-4 py-2 btn-secondary"
-                >
-                  Annulla
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Modal Storico Reports */}
-      {showReportsHistory && (
-        <div className="modal-overlay">
-          <div className="bg-gray-800 rounded-lg w-full max-w-4xl max-h-screen overflow-hidden">
-            <div className="flex justify-between items-center p-6 border-b border-gray-700">
-              <h3 className="text-lg font-semibold text-white">Storico Report</h3>
-              <button
-                onClick={() => setShowReportsHistory(false)}
-                className="text-gray-400 hover:text-gray-300"
-              >
-                <X size={20} />
-              </button>
-            </div>
-            
-            <div className="p-6 max-h-96 overflow-y-auto">
-              {reports.length === 0 ? (
-                <div className="text-center py-8 text-gray-400">
-                  <FileText size={48} className="mx-auto mb-4 opacity-50" />
-                  <p>Nessun report generato ancora</p>
-                  <p className="text-sm mt-2">I report appariranno qui dopo la generazione</p>
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  {reports.map((report: any) => {
-                    const client = clients.find(c => c.id === report.client_id);
-                    return (
-                      <div key={report.id} className="bg-gray-700 rounded-lg p-4 flex items-center justify-between hover:bg-gray-600 transition-colors">
-                        <div className="flex items-center gap-3">
-                          <div className="w-4 h-4 rounded-full" style={{ backgroundColor: client?.color }}></div>
-                          <div>
-                            <div className="text-white font-medium">{client?.name}</div>
-                            <div className="text-gray-400 text-sm">
-                              {new Date(0, report.month).toLocaleDateString('it-IT', { month: 'long' })} {report.year} - {report.total_hours}h
-                            </div>
-                          </div>
-                        </div>
-                        <div className="text-gray-400 text-sm">
-                          {new Date(report.generated_at).toLocaleDateString('it-IT')}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
-
-export default TimeTrackingApp; items-center gap-2 transition-colors"
-        >
-          <PlusCircle size={20} />
           <span className="hidden sm:inline">Aggiungi Cliente</span>
           <span className="sm:hidden">Aggiungi</span>
         </button>
@@ -1078,4 +623,151 @@ export default TimeTrackingApp; items-center gap-2 transition-colors"
         <h2 className="text-2xl font-bold text-white">Gestione Attività</h2>
         <button
           onClick={() => setShowTaskForm(true)}
-          className="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg flex
+          className="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
+        >
+          <PlusCircle size={20} />
+          <span className="hidden sm:inline">Aggiungi Attività</span>
+          <span className="sm:hidden">Aggiungi</span>
+        </button>
+      </div>
+
+      {/* Desktop Table */}
+      <div className="mobile-table-hidden bg-gray-800 rounded-lg overflow-hidden">
+        <table className="table w-full">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Cliente</th>
+              <th>Attività</th>
+              <th>Ore</th>
+              <th className="actions-column">Azioni</th>
+            </tr>
+          </thead>
+          <tbody>
+            {tasks.map(task => {
+              const client = clients.find(c => c.id === task.client_id);
+              return (
+                <tr key={task.id}>
+                  <td className="text-gray-300">{new Date(task.date).toLocaleDateString('it-IT')}</td>
+                  <td className="text-white flex items-center gap-3">
+                    <div className="w-4 h-4 rounded-full" style={{ backgroundColor: client?.color }}></div>
+                    {client?.name}
+                  </td>
+                  <td>
+                    <div className="text-white font-medium">{task.title}</div>
+                    <div className="text-gray-400 text-sm mt-1">{task.description}</div>
+                  </td>
+                  <td className="text-gray-300 font-medium">{task.hours}h</td>
+                  <td className="actions-column">
+                    <div className="flex gap-2 justify-center">
+                      <button
+                        onClick={() => {
+                          setEditingTask(task);
+                          setTaskForm({
+                            client_id: task.client_id.toString(),
+                            title: task.title,
+                            hours: task.hours.toString(),
+                            date: task.date,
+                            description: task.description
+                          });
+                          setShowTaskForm(true);
+                        }}
+                        className="text-blue-400 hover:text-blue-300 p-2 hover:bg-blue-400 hover:bg-opacity-10 rounded-lg transition-all"
+                        title="Modifica attività"
+                      >
+                        <Edit size={16} />
+                      </button>
+                      <button
+                        onClick={() => deleteTask(task.id)}
+                        className="text-red-400 hover:text-red-300 p-2 hover:bg-red-400 hover:bg-opacity-10 rounded-lg transition-all"
+                        title="Elimina attività"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Mobile Cards */}
+      <div className="mobile-cards-container">
+        {tasks.map(task => {
+          const client = clients.find(c => c.id === task.client_id);
+          return (
+            <div key={task.id} className="mobile-task-card">
+              {/* Header */}
+              <div className="mobile-card-header">
+                <div className="mobile-card-client">
+                  <div 
+                    className="mobile-card-client-dot" 
+                    style={{ backgroundColor: client?.color }}
+                  ></div>
+                  <span className="mobile-card-client-name">{client?.name}</span>
+                </div>
+                <span className="mobile-card-date">
+                  {new Date(task.date).toLocaleDateString('it-IT')}
+                </span>
+              </div>
+
+              {/* Body */}
+              <div className="mobile-card-body">
+                <h3 className="mobile-card-title">{task.title}</h3>
+                {task.description && (
+                  <p className="mobile-card-description text-truncate-mobile">
+                    {task.description}
+                  </p>
+                )}
+              </div>
+
+              {/* Info */}
+              <div className="mobile-card-info">
+                <div className="mobile-card-hours">
+                  {task.hours}h
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div className="mobile-card-actions">
+                <button
+                  onClick={() => {
+                    setEditingTask(task);
+                    setTaskForm({
+                      client_id: task.client_id.toString(),
+                      title: task.title,
+                      hours: task.hours.toString(),
+                      date: task.date,
+                      description: task.description
+                    });
+                    setShowTaskForm(true);
+                  }}
+                  className="mobile-card-action edit"
+                  title="Modifica"
+                >
+                  <Edit size={18} />
+                </button>
+                <button
+                  onClick={() => deleteTask(task.id)}
+                  className="mobile-card-action delete"
+                  title="Elimina"
+                >
+                  <Trash2 size={18} />
+                </button>
+              </div>
+            </div>
+          );
+        })}
+        
+        {tasks.length === 0 && (
+          <div className="text-center py-12 text-gray-400">
+            <Calendar size={48} className="mx-auto mb-4 opacity-50" />
+            <p className="text-lg font-medium mb-2">Nessuna attività registrata</p>
+            <p className="text-sm">Inizia aggiungendo la tua prima attività</p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
