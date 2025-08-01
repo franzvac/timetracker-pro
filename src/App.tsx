@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Clock, Users, FileText, BarChart3, Download, AlertCircle, PlusCircle, Calendar, Edit, Trash2, X } from 'lucide-react';
 
-// All'inizio del file App.tsx, aggiungi questo componente logo
+// Logo Component
 const TimeTrackerLogo = ({ className = "h-8 w-8" }) => {
   return (
     <svg 
@@ -28,37 +28,10 @@ const TimeTrackerLogo = ({ className = "h-8 w-8" }) => {
         </filter>
       </defs>
       
-      {/* Outer Glow Circle */}
-      <circle 
-        cx="50" 
-        cy="50" 
-        r="48" 
-        fill="url(#glowGradient)" 
-        opacity="0.4"
-      />
+      <circle cx="50" cy="50" r="48" fill="url(#glowGradient)" opacity="0.4" />
+      <circle cx="50" cy="50" r="42" fill="url(#clockGradient)" stroke="#ffffff" strokeWidth="2" filter="url(#glow)" />
+      <circle cx="50" cy="50" r="36" fill="rgba(0,0,0,0.1)" stroke="rgba(255,255,255,0.3)" strokeWidth="1" />
       
-      {/* Main Clock Face */}
-      <circle 
-        cx="50" 
-        cy="50" 
-        r="42" 
-        fill="url(#clockGradient)" 
-        stroke="#ffffff" 
-        strokeWidth="2"
-        filter="url(#glow)"
-      />
-      
-      {/* Inner Clock Face */}
-      <circle 
-        cx="50" 
-        cy="50" 
-        r="36" 
-        fill="rgba(0,0,0,0.1)" 
-        stroke="rgba(255,255,255,0.3)" 
-        strokeWidth="1"
-      />
-      
-      {/* Hour Markers */}
       <g stroke="#ffffff" strokeWidth="2" strokeLinecap="round">
         <line x1="50" y1="18" x2="50" y2="24" strokeWidth="3" />
         <line x1="82" y1="50" x2="76" y2="50" strokeWidth="3" />
@@ -70,35 +43,18 @@ const TimeTrackerLogo = ({ className = "h-8 w-8" }) => {
         <line x1="28.8" y1="28.8" x2="32.1" y2="32.1" />
       </g>
       
-      {/* Clock Hands */}
       <g stroke="#ffffff" strokeLinecap="round">
         <line x1="50" y1="50" x2="42" y2="35" strokeWidth="4" opacity="0.9" />
         <line x1="50" y1="50" x2="65" y2="32" strokeWidth="3" opacity="0.9" />
         <line x1="50" y1="50" x2="32" y2="65" stroke="#fbbf24" strokeWidth="2" />
       </g>
       
-      {/* Center Dot */}
       <circle cx="50" cy="50" r="4" fill="#ffffff" stroke="#f97316" strokeWidth="2" />
-      
-      {/* Progress Arc */}
-      <path
-        d="M 50 14 A 36 36 0 0 1 86 50"
-        fill="none"
-        stroke="#fbbf24"
-        strokeWidth="3"
-        strokeLinecap="round"
-        opacity="0.7"
-        strokeDasharray="5,3"
-      />
-      
+      <path d="M 50 14 A 36 36 0 0 1 86 50" fill="none" stroke="#fbbf24" strokeWidth="3" strokeLinecap="round" opacity="0.7" strokeDasharray="5,3" />
       <circle cx="50" cy="50" r="30" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
     </svg>
   );
 };
-
-
-
-
 
 const mockData = {
   clients: [
@@ -461,7 +417,7 @@ const TimeTrackingApp: React.FC = () => {
     </div>
   );
 
-  // Clients Component
+  // Clients Component - Mobile Responsive
   const Clients = () => (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -471,110 +427,21 @@ const TimeTrackingApp: React.FC = () => {
           className="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
         >
           <PlusCircle size={20} />
-          Aggiungi Cliente
+          <span className="hidden sm:inline">Aggiungi Attività</span>
+          <span className="sm:hidden">Aggiungi</span>
         </button>
       </div>
 
-      <div className="bg-gray-800 rounded-lg overflow-hidden">
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Nome</th>
-              <th>Contratto</th>
-              <th>Ore/Settimana</th>
-              <th>Progress Mensile</th>
-              <th>Azioni</th>
-            </tr>
-          </thead>
-          <tbody>
-            {clients.map(client => {
-              const monthlyHours = getMonthlyHours(client.id);
-              const target = getMonthlyTarget(client.hours_per_week);
-              const percentage = Math.min((monthlyHours / target) * 100, 100);
-              
-              return (
-                <tr key={client.id}>
-                  <td className="text-white flex items-center gap-3">
-                    <div className="w-4 h-4 rounded-full" style={{ backgroundColor: client.color }}></div>
-                    {client.name}
-                  </td>
-                  <td className="text-gray-300">€{client.contract.toLocaleString('it-IT')}</td>
-                  <td className="text-gray-300">{client.hours_per_week}h</td>
-                  <td>
-                    <div className="flex items-center gap-3">
-                      <div className="flex-1 progress-bar h-2">
-                        <div 
-                          className="progress-fill h-2"
-                          style={{ 
-                            width: `${percentage}%`,
-                            backgroundColor: client.color
-                          }}
-                        ></div>
-                      </div>
-                      <span className="text-xs text-gray-400 w-12">
-                        {percentage.toFixed(0)}%
-                      </span>
-                    </div>
-                  </td>
-                  <td>
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => {
-                          setEditingClient(client);
-                          setClientForm({ 
-                            name: client.name, 
-                            contract: client.contract.toString(), 
-                            hours_per_week: client.hours_per_week.toString(), 
-                            color: client.color 
-                          });
-                          setShowClientForm(true);
-                        }}
-                        className="text-blue-400 hover:text-blue-300 p-1"
-                        title="Modifica cliente"
-                      >
-                        <Edit size={16} />
-                      </button>
-                      <button
-                        onClick={() => deleteClient(client.id)}
-                        className="text-red-400 hover:text-red-300 p-1"
-                        title="Elimina cliente"
-                      >
-                        <Trash2 size={16} />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
-
-  // Tasks Component
-  const Tasks = () => (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-white">Gestione Attività</h2>
-        <button
-          onClick={() => setShowTaskForm(true)}
-          className="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
-        >
-          <PlusCircle size={20} />
-          Aggiungi Attività
-        </button>
-      </div>
-
-      <div className="bg-gray-800 rounded-lg overflow-hidden">
-        <table className="table">
+      {/* Desktop Table */}
+      <div className="mobile-table-hidden bg-gray-800 rounded-lg overflow-hidden">
+        <table className="table w-full">
           <thead>
             <tr>
               <th>Data</th>
               <th>Cliente</th>
               <th>Attività</th>
               <th>Ore</th>
-              <th>Azioni</th>
+              <th className="actions-column">Azioni</th>
             </tr>
           </thead>
           <tbody>
@@ -592,8 +459,8 @@ const TimeTrackingApp: React.FC = () => {
                     <div className="text-gray-400 text-sm mt-1">{task.description}</div>
                   </td>
                   <td className="text-gray-300 font-medium">{task.hours}h</td>
-                  <td>
-                    <div className="flex gap-2">
+                  <td className="actions-column">
+                    <div className="flex gap-2 justify-center">
                       <button
                         onClick={() => {
                           setEditingTask(task);
@@ -606,14 +473,14 @@ const TimeTrackingApp: React.FC = () => {
                           });
                           setShowTaskForm(true);
                         }}
-                        className="text-blue-400 hover:text-blue-300 p-1"
+                        className="text-blue-400 hover:text-blue-300 p-2 hover:bg-blue-400 hover:bg-opacity-10 rounded-lg transition-all"
                         title="Modifica attività"
                       >
                         <Edit size={16} />
                       </button>
                       <button
                         onClick={() => deleteTask(task.id)}
-                        className="text-red-400 hover:text-red-300 p-1"
+                        className="text-red-400 hover:text-red-300 p-2 hover:bg-red-400 hover:bg-opacity-10 rounded-lg transition-all"
                         title="Elimina attività"
                       >
                         <Trash2 size={16} />
@@ -626,65 +493,142 @@ const TimeTrackingApp: React.FC = () => {
           </tbody>
         </table>
       </div>
+
+      {/* Mobile Cards */}
+      <div className="mobile-cards-container">
+        {tasks.map(task => {
+          const client = clients.find(c => c.id === task.client_id);
+          return (
+            <div key={task.id} className="mobile-task-card">
+              {/* Header */}
+              <div className="mobile-card-header">
+                <div className="mobile-card-client">
+                  <div 
+                    className="mobile-card-client-dot" 
+                    style={{ backgroundColor: client?.color }}
+                  ></div>
+                  <span className="mobile-card-client-name">{client?.name}</span>
+                </div>
+                <span className="mobile-card-date">
+                  {new Date(task.date).toLocaleDateString('it-IT')}
+                </span>
+              </div>
+
+              {/* Body */}
+              <div className="mobile-card-body">
+                <h3 className="mobile-card-title">{task.title}</h3>
+                {task.description && (
+                  <p className="mobile-card-description text-truncate-mobile">
+                    {task.description}
+                  </p>
+                )}
+              </div>
+
+              {/* Info */}
+              <div className="mobile-card-info">
+                <div className="mobile-card-hours">
+                  {task.hours}h
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div className="mobile-card-actions">
+                <button
+                  onClick={() => {
+                    setEditingTask(task);
+                    setTaskForm({
+                      client_id: task.client_id.toString(),
+                      title: task.title,
+                      hours: task.hours.toString(),
+                      date: task.date,
+                      description: task.description
+                    });
+                    setShowTaskForm(true);
+                  }}
+                  className="mobile-card-action edit"
+                  title="Modifica"
+                >
+                  <Edit size={18} />
+                </button>
+                <button
+                  onClick={() => deleteTask(task.id)}
+                  className="mobile-card-action delete"
+                  title="Elimina"
+                >
+                  <Trash2 size={18} />
+                </button>
+              </div>
+            </div>
+          );
+        })}
+        
+        {tasks.length === 0 && (
+          <div className="text-center py-12 text-gray-400">
+            <Calendar size={48} className="mx-auto mb-4 opacity-50" />
+            <p className="text-lg font-medium mb-2">Nessuna attività registrata</p>
+            <p className="text-sm">Inizia aggiungendo la tua prima attività</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 
   return (
     <div className="min-h-screen bg-gray-900">
-      {/* Navigation - VERSIONE MIGLIORATA */}
-<nav className="bg-gray-800 border-b border-gray-700">
-  <div className="max-w-7xl mx-auto nav-container">
-    <div className="flex justify-between items-center h-16">
-      {/* Logo e Brand */}
-      <div className="nav-brand">
-        <TimeTrackerLogo className="h-8 w-8 flex-shrink-0" />
-        <span className="nav-title">
-          <span className="hidden sm:inline">TimeTracker Pro</span>
-          <span className="sm:hidden">TT Pro</span>
-        </span>
-      </div>
-      
-      {/* Navigation Buttons */}
-      <div className="nav-buttons">
-        <button
-          onClick={() => setActiveTab('dashboard')}
-          className={`nav-button ${
-            activeTab === 'dashboard' 
-              ? 'bg-orange-600 text-white' 
-              : 'text-gray-300 hover:text-white hover:bg-gray-700'
-          }`}
-        >
-          <BarChart3 size={16} className="nav-icon" />
-          <span className="nav-text">Dashboard</span>
-        </button>
-        
-        <button
-          onClick={() => setActiveTab('clients')}
-          className={`nav-button ${
-            activeTab === 'clients' 
-              ? 'bg-orange-600 text-white' 
-              : 'text-gray-300 hover:text-white hover:bg-gray-700'
-          }`}
-        >
-          <Users size={16} className="nav-icon" />
-          <span className="nav-text">Clienti</span>
-        </button>
-        
-        <button
-          onClick={() => setActiveTab('tasks')}
-          className={`nav-button ${
-            activeTab === 'tasks' 
-              ? 'bg-orange-600 text-white' 
-              : 'text-gray-300 hover:text-white hover:bg-gray-700'
-          }`}
-        >
-          <Calendar size={16} className="nav-icon" />
-          <span className="nav-text">Attività</span>
-        </button>
-      </div>
-    </div>
-  </div>
-</nav>
+      {/* Navigation */}
+      <nav className="bg-gray-800 border-b border-gray-700">
+        <div className="max-w-7xl mx-auto nav-container">
+          <div className="flex justify-between items-center h-16">
+            {/* Logo e Brand */}
+            <div className="nav-brand">
+              <TimeTrackerLogo className="h-8 w-8 flex-shrink-0" />
+              <span className="nav-title">
+                <span className="hidden sm:inline">TimeTracker Pro</span>
+                <span className="sm:hidden">TT Pro</span>
+              </span>
+            </div>
+            
+            {/* Navigation Buttons */}
+            <div className="nav-buttons">
+              <button
+                onClick={() => setActiveTab('dashboard')}
+                className={`nav-button ${
+                  activeTab === 'dashboard' 
+                    ? 'bg-orange-600 text-white' 
+                    : 'text-gray-300 hover:text-white hover:bg-gray-700'
+                }`}
+              >
+                <BarChart3 size={16} className="nav-icon" />
+                <span className="nav-text">Dashboard</span>
+              </button>
+              
+              <button
+                onClick={() => setActiveTab('clients')}
+                className={`nav-button ${
+                  activeTab === 'clients' 
+                    ? 'bg-orange-600 text-white' 
+                    : 'text-gray-300 hover:text-white hover:bg-gray-700'
+                }`}
+              >
+                <Users size={16} className="nav-icon" />
+                <span className="nav-text">Clienti</span>
+              </button>
+              
+              <button
+                onClick={() => setActiveTab('tasks')}
+                className={`nav-button ${
+                  activeTab === 'tasks' 
+                    ? 'bg-orange-600 text-white' 
+                    : 'text-gray-300 hover:text-white hover:bg-gray-700'
+                }`}
+              >
+                <Calendar size={16} className="nav-icon" />
+                <span className="nav-text">Attività</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </nav>
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -763,6 +707,7 @@ const TimeTrackingApp: React.FC = () => {
                   onClick={handleClientSubmit}
                   className="flex-1 btn-primary"
                 >
+                  {editingClient ? 'Aggiorna Cliente' : 'Crea Cliente'}
                 </button>
                 <button
                   onClick={() => {
@@ -934,4 +879,203 @@ const TimeTrackingApp: React.FC = () => {
   );
 };
 
-export default TimeTrackingApp;
+export default TimeTrackingApp; items-center gap-2 transition-colors"
+        >
+          <PlusCircle size={20} />
+          <span className="hidden sm:inline">Aggiungi Cliente</span>
+          <span className="sm:hidden">Aggiungi</span>
+        </button>
+      </div>
+
+      {/* Desktop Table */}
+      <div className="mobile-table-hidden bg-gray-800 rounded-lg overflow-hidden">
+        <table className="table w-full">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Contratto</th>
+              <th>Ore/Settimana</th>
+              <th>Progress Mensile</th>
+              <th className="actions-column">Azioni</th>
+            </tr>
+          </thead>
+          <tbody>
+            {clients.map(client => {
+              const monthlyHours = getMonthlyHours(client.id);
+              const target = getMonthlyTarget(client.hours_per_week);
+              const percentage = Math.min((monthlyHours / target) * 100, 100);
+              
+              return (
+                <tr key={client.id}>
+                  <td className="text-white flex items-center gap-3">
+                    <div className="w-4 h-4 rounded-full" style={{ backgroundColor: client.color }}></div>
+                    {client.name}
+                  </td>
+                  <td className="text-gray-300">€{client.contract.toLocaleString('it-IT')}</td>
+                  <td className="text-gray-300">{client.hours_per_week}h</td>
+                  <td>
+                    <div className="table-progress">
+                      <div className="table-progress-bar">
+                        <div 
+                          className="table-progress-fill"
+                          style={{ 
+                            width: `${percentage}%`,
+                            backgroundColor: client.color
+                          }}
+                        ></div>
+                      </div>
+                      <span className="table-progress-text">
+                        {percentage.toFixed(0)}%
+                      </span>
+                    </div>
+                  </td>
+                  <td className="actions-column">
+                    <div className="flex gap-2 justify-center">
+                      <button
+                        onClick={() => {
+                          setEditingClient(client);
+                          setClientForm({ 
+                            name: client.name, 
+                            contract: client.contract.toString(), 
+                            hours_per_week: client.hours_per_week.toString(), 
+                            color: client.color 
+                          });
+                          setShowClientForm(true);
+                        }}
+                        className="text-blue-400 hover:text-blue-300 p-2 hover:bg-blue-400 hover:bg-opacity-10 rounded-lg transition-all"
+                        title="Modifica cliente"
+                      >
+                        <Edit size={16} />
+                      </button>
+                      <button
+                        onClick={() => deleteClient(client.id)}
+                        className="text-red-400 hover:text-red-300 p-2 hover:bg-red-400 hover:bg-opacity-10 rounded-lg transition-all"
+                        title="Elimina cliente"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Mobile Cards */}
+      <div className="mobile-cards-container">
+        {clients.map(client => {
+          const monthlyHours = getMonthlyHours(client.id);
+          const target = getMonthlyTarget(client.hours_per_week);
+          const percentage = Math.min((monthlyHours / target) * 100, 100);
+          
+          // Determina il badge status
+          let badgeClass = "completed";
+          let badgeText = "OK";
+          if (percentage > 90) {
+            badgeClass = "warning";
+            badgeText = "Limite";
+          } else if (percentage > 70) {
+            badgeClass = "in-progress";
+            badgeText = "In corso";
+          }
+          
+          return (
+            <div key={client.id} className="mobile-client-card">
+              {/* Badge Status */}
+              <div className={`mobile-card-badge ${badgeClass}`}>
+                {badgeText}
+              </div>
+
+              {/* Header */}
+              <div className="mobile-card-header">
+                <div className="mobile-card-client">
+                  <div 
+                    className="mobile-card-client-dot" 
+                    style={{ backgroundColor: client.color }}
+                  ></div>
+                  <span className="mobile-card-client-name">{client.name}</span>
+                </div>
+                <span className="mobile-card-contract">
+                  €{client.contract.toLocaleString('it-IT')}/mese
+                </span>
+              </div>
+
+              {/* Progress Info */}
+              <div className="mobile-card-info">
+                <div className="mobile-card-hours">
+                  {client.hours_per_week}h/sett
+                </div>
+                <div className="mobile-card-progress">
+                  <div className="mobile-card-progress-bar">
+                    <div 
+                      className="mobile-card-progress-fill"
+                      style={{ 
+                        width: `${percentage}%`,
+                        backgroundColor: client.color
+                      }}
+                    ></div>
+                  </div>
+                  <div className="mobile-card-progress-text">
+                    {monthlyHours.toFixed(1)}/{target}h questo mese
+                  </div>
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div className="mobile-card-actions">
+                <button
+                  onClick={() => generateReport(client.id)}
+                  className="mobile-card-action report"
+                >
+                  <Download size={16} />
+                  <span className="text-sm font-medium">Report</span>
+                </button>
+                <button
+                  onClick={() => {
+                    setEditingClient(client);
+                    setClientForm({ 
+                      name: client.name, 
+                      contract: client.contract.toString(), 
+                      hours_per_week: client.hours_per_week.toString(), 
+                      color: client.color 
+                    });
+                    setShowClientForm(true);
+                  }}
+                  className="mobile-card-action edit"
+                  title="Modifica"
+                >
+                  <Edit size={18} />
+                </button>
+                <button
+                  onClick={() => deleteClient(client.id)}
+                  className="mobile-card-action delete"
+                  title="Elimina"
+                >
+                  <Trash2 size={18} />
+                </button>
+              </div>
+            </div>
+          );
+        })}
+        
+        {clients.length === 0 && (
+          <div className="text-center py-12 text-gray-400">
+            <Users size={48} className="mx-auto mb-4 opacity-50" />
+            <p className="text-lg font-medium mb-2">Nessun cliente registrato</p>
+            <p className="text-sm">Inizia aggiungendo il tuo primo cliente</p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
+  // Tasks Component - Mobile Responsive
+  const Tasks = () => (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold text-white">Gestione Attività</h2>
+        <button
+          onClick={() => setShowTaskForm(true)}
+          className="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg flex
