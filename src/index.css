@@ -866,3 +866,644 @@ button::before {
   z-index: 1000;
 }
 */
+/* === TABELLE MOBILE RESPONSIVE === */
+
+/* Layout mobile per tabelle - Card style */
+@media (max-width: 768px) {
+  
+  /* Nascondi la tabella tradizionale su mobile */
+  .mobile-table-hidden {
+    display: none;
+  }
+  
+  /* Container per le card mobile */
+  .mobile-cards-container {
+    display: block;
+    space-y: 1rem;
+  }
+  
+  /* Singola card per ogni riga */
+  .mobile-task-card,
+  .mobile-client-card {
+    background-color: #1f2937;
+    border: 1px solid #374151;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    position: relative;
+    transition: all 0.2s ease;
+  }
+  
+  .mobile-task-card:hover,
+  .mobile-client-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-color: #4b5563;
+  }
+  
+  /* Header della card con client info */
+  .mobile-card-header {
+    display: flex;
+    justify-content: between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #374151;
+  }
+  
+  .mobile-card-client {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1;
+  }
+  
+  .mobile-card-client-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  
+  .mobile-card-client-name {
+    font-weight: 600;
+    color: #ffffff;
+    font-size: 0.9rem;
+  }
+  
+  .mobile-card-date {
+    font-size: 0.8rem;
+    color: #9ca3af;
+    font-weight: 500;
+  }
+  
+  /* Body della card */
+  .mobile-card-body {
+    margin-bottom: 1rem;
+  }
+  
+  .mobile-card-title {
+    font-weight: 600;
+    color: #ffffff;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .mobile-card-description {
+    color: #d1d5db;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    margin-bottom: 0.75rem;
+  }
+  
+  /* Info row (ore, contract, etc.) */
+  .mobile-card-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .mobile-card-hours {
+    background-color: #374151;
+    color: #ffffff;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+  }
+  
+  .mobile-card-contract {
+    color: #10b981;
+    font-weight: 600;
+    font-size: 0.875rem;
+  }
+  
+  .mobile-card-progress {
+    flex: 1;
+    margin: 0 1rem;
+  }
+  
+  .mobile-card-progress-bar {
+    width: 100%;
+    height: 4px;
+    background-color: #374151;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  
+  .mobile-card-progress-fill {
+    height: 100%;
+    transition: width 0.3s ease;
+    border-radius: 2px;
+  }
+  
+  .mobile-card-progress-text {
+    font-size: 0.75rem;
+    color: #9ca3af;
+    text-align: center;
+    margin-top: 0.25rem;
+  }
+  
+  /* Footer con azioni */
+  .mobile-card-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid #374151;
+  }
+  
+  .mobile-card-action {
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    min-height: 40px;
+  }
+  
+  .mobile-card-action:hover {
+    transform: scale(1.1);
+  }
+  
+  .mobile-card-action.edit {
+    background-color: rgba(59, 130, 246, 0.1);
+    color: #60a5fa;
+    border: 1px solid rgba(59, 130, 246, 0.2);
+  }
+  
+  .mobile-card-action.edit:hover {
+    background-color: rgba(59, 130, 246, 0.2);
+    color: #93c5fd;
+  }
+  
+  .mobile-card-action.delete {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+  }
+  
+  .mobile-card-action.delete:hover {
+    background-color: rgba(239, 68, 68, 0.2);
+    color: #fca5a5;
+  }
+  
+  .mobile-card-action.report {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    flex: 1;
+    max-width: 120px;
+    gap: 0.5rem;
+  }
+  
+  .mobile-card-action.report:hover {
+    background-color: rgba(16, 185, 129, 0.2);
+    color: #34d399;
+  }
+  
+  /* Badge per stato */
+  .mobile-card-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  
+  .mobile-card-badge.completed {
+    background-color: rgba(16, 185, 129, 0.2);
+    color: #10b981;
+  }
+  
+  .mobile-card-badge.in-progress {
+    background-color: rgba(249, 115, 22, 0.2);
+    color: #f97316;
+  }
+  
+  .mobile-card-badge.warning {
+    background-color: rgba(245, 158, 11, 0.2);
+    color: #f59e0b;
+  }
+}
+
+/* Desktop: mostra tabella normale */
+@media (min-width: 769px) {
+  .mobile-cards-container {
+    display: none;
+  }
+  
+  .mobile-table-hidden {
+    display: table;
+  }
+}
+
+/* === MIGLIORAMENTI TABELLA DESKTOP === */
+
+/* Tabella più compatta e leggibile */
+@media (min-width: 769px) {
+  .table th {
+    padding: 0.875rem 1rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.025em;
+  }
+  
+  .table td {
+    padding: 1rem 1rem;
+    font-size: 0.875rem;
+    vertical-align: middle;
+  }
+  
+  .table tbody tr:hover {
+    background-color: #374151;
+    transform: translateX(2px);
+    transition: all 0.2s ease;
+  }
+  
+  /* Colonna azioni sempre visibile */
+  .table .actions-column {
+    width: 100px;
+    text-align: center;
+  }
+  
+  .table .actions-column .flex {
+    justify-content: center;
+    gap: 0.75rem;
+  }
+  
+  /* Progress bar nella tabella */
+  .table-progress {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  
+  .table-progress-bar {
+    flex: 1;
+    height: 6px;
+    background-color: #374151;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  
+  .table-progress-fill {
+    height: 100%;
+    transition: width 0.3s ease;
+    border-radius: 3px;
+  }
+  
+  .table-progress-text {
+    font-size: 0.75rem;
+    color: #9ca3af;
+    min-width: 35px;
+    text-align: right;
+  }
+}
+
+/* === ANIMAZIONI === */
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mobile-task-card,
+.mobile-client-card {
+  animation: slideInUp 0.3s ease-out;
+}
+
+/* Stagger animation per multiple cards */
+.mobile-task-card:nth-child(1) { animation-delay: 0ms; }
+.mobile-task-card:nth-child(2) { animation-delay: 50ms; }
+.mobile-task-card:nth-child(3) { animation-delay: 100ms; }
+.mobile-task-card:nth-child(4) { animation-delay: 150ms; }
+.mobile-task-card:nth-child(5) { animation-delay: 200ms; }
+
+/* === UTILITIES === */
+
+.text-truncate-mobile {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Swipe gesture hint */
+.mobile-card-swipe-hint {
+  position: relative;
+}
+
+.mobile-card-swipe-hint::after {
+  content: "⟵ Scorri";
+  position: absolute;
+  right: -60px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.7rem;
+  color: #6b7280;
+  opacity: 0.5;
+  animation: fadeInOut 2s infinite;
+}
+
+@keyframes fadeInOut {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.7; }
+}
+
+/* === CSS MOBILE RESPONSIVE - Aggiungi alla fine di src/index.css === */
+
+/* Layout mobile per tabelle - Card style */
+@media (max-width: 768px) {
+  
+  /* Nascondi la tabella tradizionale su mobile */
+  .mobile-table-hidden {
+    display: none !important;
+  }
+  
+  /* Container per le card mobile */
+  .mobile-cards-container {
+    display: block;
+  }
+  
+  /* Singola card per ogni riga */
+  .mobile-task-card,
+  .mobile-client-card {
+    background-color: #1f2937;
+    border: 1px solid #374151;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    position: relative;
+    transition: all 0.2s ease;
+  }
+  
+  .mobile-task-card:hover,
+  .mobile-client-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-color: #4b5563;
+  }
+  
+  /* Header della card con client info */
+  .mobile-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #374151;
+  }
+  
+  .mobile-card-client {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1;
+  }
+  
+  .mobile-card-client-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  
+  .mobile-card-client-name {
+    font-weight: 600;
+    color: #ffffff;
+    font-size: 0.9rem;
+  }
+  
+  .mobile-card-date {
+    font-size: 0.8rem;
+    color: #9ca3af;
+    font-weight: 500;
+  }
+  
+  .mobile-card-contract {
+    color: #10b981;
+    font-weight: 600;
+    font-size: 0.875rem;
+  }
+  
+  /* Body della card */
+  .mobile-card-body {
+    margin-bottom: 1rem;
+  }
+  
+  .mobile-card-title {
+    font-weight: 600;
+    color: #ffffff;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .mobile-card-description {
+    color: #d1d5db;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    margin-bottom: 0.75rem;
+  }
+  
+  /* Info row (ore, contract, etc.) */
+  .mobile-card-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .mobile-card-hours {
+    background-color: #374151;
+    color: #ffffff;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+  }
+  
+  .mobile-card-progress {
+    flex: 1;
+    margin: 0 1rem;
+  }
+  
+  .mobile-card-progress-bar {
+    width: 100%;
+    height: 4px;
+    background-color: #374151;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  
+  .mobile-card-progress-fill {
+    height: 100%;
+    transition: width 0.3s ease;
+    border-radius: 2px;
+  }
+  
+  .mobile-card-progress-text {
+    font-size: 0.75rem;
+    color: #9ca3af;
+    text-align: center;
+    margin-top: 0.25rem;
+  }
+  
+  /* Footer con azioni */
+  .mobile-card-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid #374151;
+  }
+  
+  .mobile-card-action {
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    min-height: 40px;
+    cursor: pointer;
+  }
+  
+  .mobile-card-action:hover {
+    transform: scale(1.1);
+  }
+  
+  .mobile-card-action.edit {
+    background-color: rgba(59, 130, 246, 0.1);
+    color: #60a5fa;
+    border: 1px solid rgba(59, 130, 246, 0.2);
+  }
+  
+  .mobile-card-action.edit:hover {
+    background-color: rgba(59, 130, 246, 0.2);
+    color: #93c5fd;
+  }
+  
+  .mobile-card-action.delete {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+  }
+  
+  .mobile-card-action.delete:hover {
+    background-color: rgba(239, 68, 68, 0.2);
+    color: #fca5a5;
+  }
+  
+  .mobile-card-action.report {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    flex: 1;
+    max-width: 120px;
+    gap: 0.5rem;
+  }
+  
+  .mobile-card-action.report:hover {
+    background-color: rgba(16, 185, 129, 0.2);
+    color: #34d399;
+  }
+  
+  /* Badge per stato */
+  .mobile-card-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  
+  .mobile-card-badge.completed {
+    background-color: rgba(16, 185, 129, 0.2);
+    color: #10b981;
+  }
+  
+  .mobile-card-badge.in-progress {
+    background-color: rgba(249, 115, 22, 0.2);
+    color: #f97316;
+  }
+  
+  .mobile-card-badge.warning {
+    background-color: rgba(245, 158, 11, 0.2);
+    color: #f59e0b;
+  }
+
+  /* Text truncation */
+  .text-truncate-mobile {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+/* Desktop: mostra tabella normale */
+@media (min-width: 769px) {
+  .mobile-cards-container {
+    display: none;
+  }
+  
+  .mobile-table-hidden {
+    display: table !important;
+  }
+
+  /* Miglioramenti tabella desktop */
+  .table .actions-column {
+    width: 100px;
+    text-align: center;
+  }
+  
+  .table .actions-column .flex {
+    justify-content: center;
+    gap: 0.75rem;
+  }
+  
+  /* Progress bar nella tabella */
+  .table-progress {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  
+  .table-progress-bar {
+    flex: 1;
+    height: 6px;
+    background-color: #374151;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  
+  .table-progress-fill {
+    height: 100%;
+    transition: width 0.3s ease;
+    border-radius: 3px;
+  }
+  
+  .table-progress-text {
+    font-size: 0.75rem;
+    color: #9ca3af;
+    min-width: 35px;
+    text-align: right;
+  }
+}
