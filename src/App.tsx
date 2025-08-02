@@ -1,7 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { Clock, Users, FileText, BarChart3, Download, AlertCircle, PlusCircle, Calendar, Edit, Trash2, X } from 'lucide-react';
+import { 
+  fetchClients, 
+  fetchTasks, 
+  fetchReports,
+  createClient,
+  updateClient,
+  deleteClient as deleteClientDB,
+  createTask,
+  updateTask,
+  deleteTask as deleteTaskDB,
+  createReport,
+  subscribeToClients,
+  subscribeToTasks
+} from './supabaseOperations';
+import { Client, Task, Report } from './supabaseClient';
 
-// All'inizio del file App.tsx, aggiungi questo componente logo
+// Logo Component
 const TimeTrackerLogo = ({ className = "h-8 w-8" }) => {
   return (
     <svg 
@@ -28,37 +43,10 @@ const TimeTrackerLogo = ({ className = "h-8 w-8" }) => {
         </filter>
       </defs>
       
-      {/* Outer Glow Circle */}
-      <circle 
-        cx="50" 
-        cy="50" 
-        r="48" 
-        fill="url(#glowGradient)" 
-        opacity="0.4"
-      />
+      <circle cx="50" cy="50" r="48" fill="url(#glowGradient)" opacity="0.4" />
+      <circle cx="50" cy="50" r="42" fill="url(#clockGradient)" stroke="#ffffff" strokeWidth="2" filter="url(#glow)" />
+      <circle cx="50" cy="50" r="36" fill="rgba(0,0,0,0.1)" stroke="rgba(255,255,255,0.3)" strokeWidth="1" />
       
-      {/* Main Clock Face */}
-      <circle 
-        cx="50" 
-        cy="50" 
-        r="42" 
-        fill="url(#clockGradient)" 
-        stroke="#ffffff" 
-        strokeWidth="2"
-        filter="url(#glow)"
-      />
-      
-      {/* Inner Clock Face */}
-      <circle 
-        cx="50" 
-        cy="50" 
-        r="36" 
-        fill="rgba(0,0,0,0.1)" 
-        stroke="rgba(255,255,255,0.3)" 
-        strokeWidth="1"
-      />
-      
-      {/* Hour Markers */}
       <g stroke="#ffffff" strokeWidth="2" strokeLinecap="round">
         <line x1="50" y1="18" x2="50" y2="24" strokeWidth="3" />
         <line x1="82" y1="50" x2="76" y2="50" strokeWidth="3" />
@@ -70,68 +58,89 @@ const TimeTrackerLogo = ({ className = "h-8 w-8" }) => {
         <line x1="28.8" y1="28.8" x2="32.1" y2="32.1" />
       </g>
       
-      {/* Clock Hands */}
       <g stroke="#ffffff" strokeLinecap="round">
         <line x1="50" y1="50" x2="42" y2="35" strokeWidth="4" opacity="0.9" />
         <line x1="50" y1="50" x2="65" y2="32" strokeWidth="3" opacity="0.9" />
         <line x1="50" y1="50" x2="32" y2="65" stroke="#fbbf24" strokeWidth="2" />
       </g>
       
-      {/* Center Dot */}
       <circle cx="50" cy="50" r="4" fill="#ffffff" stroke="#f97316" strokeWidth="2" />
-      
-      {/* Progress Arc */}
-      <path
-        d="M 50 14 A 36 36 0 0 1 86 50"
-        fill="none"
-        stroke="#fbbf24"
-        strokeWidth="3"
-        strokeLinecap="round"
-        opacity="0.7"
-        strokeDasharray="5,3"
-      />
-      
+      <path d="M 50 14 A 36 36 0 0 1 86 50" fill="none" stroke="#fbbf24" strokeWidth="3" strokeLinecap="round" opacity="0.7" strokeDasharray="5,3" />
       <circle cx="50" cy="50" r="30" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
     </svg>
   );
 };
 
-
-
-
-
-const mockData = {
-  clients: [
-    { id: 1, name: 'Cliente A', contract: 650, hours_per_week: 16, color: '#f97316' },
-    { id: 2, name: 'Cliente B', contract: 350, hours_per_week: 10, color: '#06b6d4' },
-    { id: 3, name: 'Cliente C', contract: 450, hours_per_week: 12, color: '#8b5cf6' }
-  ],
-  tasks: [
-    { id: 1, client_id: 1, title: 'Sviluppo frontend', hours: 4, date: '2025-01-15', description: 'Implementazione dashboard' },
-    { id: 2, client_id: 1, title: 'Meeting progetto', hours: 1.5, date: '2025-01-16', description: 'Revisione requisiti' },
-    { id: 3, client_id: 2, title: 'Analisi database', hours: 3, date: '2025-01-17', description: 'Ottimizzazione query' },
-    { id: 4, client_id: 2, title: 'Documentazione API', hours: 2.5, date: '2025-01-18', description: 'Creazione docs' },
-    { id: 5, client_id: 3, title: 'Setup ambiente', hours: 5, date: '2025-01-19', description: 'Config server' }
-  ],
-  reports: []
-};
-
 const TimeTrackingApp: React.FC = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
-  const [clients, setClients] = useState(mockData.clients);
-  const [tasks, setTasks] = useState(mockData.tasks);
-  const [reports, setReports] = useState<any[]>(mockData.reports);
+  const [clients, setClients] = useState<Client[]>([]);
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [reports, setReports] = useState<Report[]>([]);
   const [notifications, setNotifications] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   
   const [showClientForm, setShowClientForm] = useState(false);
   const [showTaskForm, setShowTaskForm] = useState(false);
   const [showReportsHistory, setShowReportsHistory] = useState(false);
-  const [editingClient, setEditingClient] = useState<any>(null);
-  const [editingTask, setEditingTask] = useState<any>(null);
+  const [editingClient, setEditingClient] = useState<Client | null>(null);
+  const [editingTask, setEditingTask] = useState<Task | null>(null);
 
   // Form states
   const [clientForm, setClientForm] = useState({ name: '', contract: '', hours_per_week: '', color: '#f97316' });
   const [taskForm, setTaskForm] = useState({ client_id: '', title: '', hours: '', date: '', description: '' });
+
+  // Carica dati iniziali da Supabase
+  useEffect(() => {
+    loadInitialData();
+    
+    // Setup real-time subscriptions
+    const clientsSubscription = subscribeToClients((payload) => {
+      console.log('Client change:', payload);
+      if (payload.eventType === 'INSERT') {
+        setClients(current => [...current, payload.new as Client]);
+      } else if (payload.eventType === 'UPDATE') {
+        setClients(current => current.map(c => c.id === payload.new.id ? payload.new as Client : c));
+      } else if (payload.eventType === 'DELETE') {
+        setClients(current => current.filter(c => c.id !== payload.old.id));
+      }
+    });
+
+    const tasksSubscription = subscribeToTasks((payload) => {
+      console.log('Task change:', payload);
+      if (payload.eventType === 'INSERT') {
+        setTasks(current => [...current, payload.new as Task]);
+      } else if (payload.eventType === 'UPDATE') {
+        setTasks(current => current.map(t => t.id === payload.new.id ? payload.new as Task : t));
+      } else if (payload.eventType === 'DELETE') {
+        setTasks(current => current.filter(t => t.id !== payload.old.id));
+      }
+    });
+
+    // Cleanup subscriptions
+    return () => {
+      clientsSubscription.unsubscribe();
+      tasksSubscription.unsubscribe();
+    };
+  }, []);
+
+  const loadInitialData = async () => {
+    setLoading(true);
+    try {
+      const [clientsData, tasksData, reportsData] = await Promise.all([
+        fetchClients(),
+        fetchTasks(),
+        fetchReports()
+      ]);
+      
+      setClients(clientsData);
+      setTasks(tasksData);
+      setReports(reportsData);
+    } catch (error) {
+      console.error('Error loading data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Calcola ore mensili per cliente
   const getMonthlyHours = (clientId: number, month = new Date().getMonth(), year = new Date().getFullYear()) => {
@@ -175,63 +184,82 @@ const TimeTrackingApp: React.FC = () => {
     checkNotifications();
   }, [tasks, clients]);
 
-  // Gestione form clienti
-  const handleClientSubmit = () => {
+  // Gestione form clienti con Supabase
+  const handleClientSubmit = async () => {
     if (!clientForm.name || !clientForm.contract || !clientForm.hours_per_week) return;
     
     if (editingClient) {
-      setClients(clients.map(c => c.id === editingClient.id ? { ...editingClient, ...clientForm, contract: parseFloat(clientForm.contract), hours_per_week: parseFloat(clientForm.hours_per_week) } : c));
-      setEditingClient(null);
-    } else {
-      const newClient = { 
-        id: Date.now(), 
-        ...clientForm, 
+      // Update existing client
+      const updated = await updateClient(editingClient.id, {
+        name: clientForm.name,
         contract: parseFloat(clientForm.contract),
-        hours_per_week: parseFloat(clientForm.hours_per_week)
-      };
-      setClients([...clients, newClient]);
+        hours_per_week: parseFloat(clientForm.hours_per_week),
+        color: clientForm.color
+      });
+      
+      if (updated) {
+        setEditingClient(null);
+      }
+    } else {
+      // Create new client
+      await createClient({
+        name: clientForm.name,
+        contract: parseFloat(clientForm.contract),
+        hours_per_week: parseFloat(clientForm.hours_per_week),
+        color: clientForm.color
+      });
     }
     
     setClientForm({ name: '', contract: '', hours_per_week: '', color: '#f97316' });
     setShowClientForm(false);
   };
 
-  // Gestione form task
-  const handleTaskSubmit = () => {
+  // Gestione form task con Supabase
+  const handleTaskSubmit = async () => {
     if (!taskForm.client_id || !taskForm.title || !taskForm.hours || !taskForm.date) return;
     
     if (editingTask) {
-      setTasks(tasks.map(t => t.id === editingTask.id ? { ...editingTask, ...taskForm, hours: parseFloat(taskForm.hours), client_id: parseInt(taskForm.client_id) } : t));
-      setEditingTask(null);
-    } else {
-      const newTask = { 
-        id: Date.now(), 
-        ...taskForm, 
+      // Update existing task
+      const updated = await updateTask(editingTask.id, {
         client_id: parseInt(taskForm.client_id),
-        hours: parseFloat(taskForm.hours)
-      };
-      setTasks([...tasks, newTask]);
+        title: taskForm.title,
+        hours: parseFloat(taskForm.hours),
+        date: taskForm.date,
+        description: taskForm.description
+      });
+      
+      if (updated) {
+        setEditingTask(null);
+      }
+    } else {
+      // Create new task
+      await createTask({
+        client_id: parseInt(taskForm.client_id),
+        title: taskForm.title,
+        hours: parseFloat(taskForm.hours),
+        date: taskForm.date,
+        description: taskForm.description
+      });
     }
     
     setTaskForm({ client_id: '', title: '', hours: '', date: '', description: '' });
     setShowTaskForm(false);
   };
 
-  // Elimina cliente
-  const deleteClient = (clientId: number) => {
+  // Elimina cliente con Supabase
+  const deleteClient = async (clientId: number) => {
     if (!window.confirm('Sei sicuro di voler eliminare questo cliente? Verranno eliminate anche tutte le sue attività.')) return;
-    setClients(clients.filter(c => c.id !== clientId));
-    setTasks(tasks.filter(t => t.client_id !== clientId));
+    await deleteClientDB(clientId);
   };
 
-  // Elimina task
-  const deleteTask = (taskId: number) => {
+  // Elimina task con Supabase
+  const deleteTask = async (taskId: number) => {
     if (!window.confirm('Sei sicuro di voler eliminare questa attività?')) return;
-    setTasks(tasks.filter(t => t.id !== taskId));
+    await deleteTaskDB(taskId);
   };
 
-  // Genera report
-  const generateReport = (clientId: number) => {
+  // Genera report con Supabase
+  const generateReport = async (clientId: number) => {
     const client = clients.find(c => c.id === clientId);
     if (!client) return;
     
@@ -240,19 +268,25 @@ const TimeTrackingApp: React.FC = () => {
     const currentMonth = new Date().getMonth();
     const currentYear = new Date().getFullYear();
     
-    // Salva il report nello storico
+    // Salva il report su Supabase
     const reportData = {
-      id: Date.now(),
       client_id: clientId,
       month: currentMonth,
       year: currentYear,
       total_hours: totalHours,
-      generated_at: new Date().toISOString(),
-      tasks: clientTasks
+      report_data: {
+        client_name: client.name,
+        tasks: clientTasks
+      }
     };
     
-    setReports([...reports, reportData]);
+    const savedReport = await createReport(reportData);
     
+    if (savedReport) {
+      setReports(current => [...current, savedReport]);
+    }
+    
+    // Genera HTML del report
     const reportContent = `
       <!DOCTYPE html>
       <html lang="it">
@@ -345,6 +379,18 @@ const TimeTrackingApp: React.FC = () => {
       newWindow.document.close();
     }
   };
+
+  // Loading state
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <TimeTrackerLogo className="h-16 w-16 mx-auto mb-4 animate-spin" />
+          <p className="text-white text-lg">Caricamento dati...</p>
+        </div>
+      </div>
+    );
+  }
 
   // Dashboard Component
   const Dashboard = () => (
@@ -537,7 +583,7 @@ const TimeTrackingApp: React.FC = () => {
                       <button
                         onClick={() => deleteClient(client.id)}
                         className="text-red-400 hover:text-red-300 p-1"
-                        title="Elimina cliente"
+                        title="Elimina attività"
                       >
                         <Trash2 size={16} />
                       </button>
@@ -551,6 +597,7 @@ const TimeTrackingApp: React.FC = () => {
       </div>
     </div>
   );
+
 
   // Tasks Component
   const Tasks = () => (
@@ -629,62 +676,63 @@ const TimeTrackingApp: React.FC = () => {
     </div>
   );
 
+
   return (
     <div className="min-h-screen bg-gray-900">
-      {/* Navigation - VERSIONE MIGLIORATA */}
-<nav className="bg-gray-800 border-b border-gray-700">
-  <div className="max-w-7xl mx-auto nav-container">
-    <div className="flex justify-between items-center h-16">
-      {/* Logo e Brand */}
-      <div className="nav-brand">
-        <TimeTrackerLogo className="h-8 w-8 flex-shrink-0" />
-        <span className="nav-title">
-          <span className="hidden sm:inline">TimeTracker Pro</span>
-          <span className="sm:hidden">TT Pro</span>
-        </span>
-      </div>
-      
-      {/* Navigation Buttons */}
-      <div className="nav-buttons">
-        <button
-          onClick={() => setActiveTab('dashboard')}
-          className={`nav-button ${
-            activeTab === 'dashboard' 
-              ? 'bg-orange-600 text-white' 
-              : 'text-gray-300 hover:text-white hover:bg-gray-700'
-          }`}
-        >
-          <BarChart3 size={16} className="nav-icon" />
-          <span className="nav-text">Dashboard</span>
-        </button>
-        
-        <button
-          onClick={() => setActiveTab('clients')}
-          className={`nav-button ${
-            activeTab === 'clients' 
-              ? 'bg-orange-600 text-white' 
-              : 'text-gray-300 hover:text-white hover:bg-gray-700'
-          }`}
-        >
-          <Users size={16} className="nav-icon" />
-          <span className="nav-text">Clienti</span>
-        </button>
-        
-        <button
-          onClick={() => setActiveTab('tasks')}
-          className={`nav-button ${
-            activeTab === 'tasks' 
-              ? 'bg-orange-600 text-white' 
-              : 'text-gray-300 hover:text-white hover:bg-gray-700'
-          }`}
-        >
-          <Calendar size={16} className="nav-icon" />
-          <span className="nav-text">Attività</span>
-        </button>
-      </div>
-    </div>
-  </div>
-</nav>
+      {/* Navigation */}
+      <nav className="bg-gray-800 border-b border-gray-700">
+        <div className="max-w-7xl mx-auto nav-container">
+          <div className="flex justify-between items-center h-16">
+            {/* Logo e Brand */}
+            <div className="nav-brand">
+              <TimeTrackerLogo className="h-8 w-8 flex-shrink-0" />
+              <span className="nav-title">
+                <span className="hidden sm:inline">TimeTracker Pro</span>
+                <span className="sm:hidden">TT Pro</span>
+              </span>
+            </div>
+            
+            {/* Navigation Buttons */}
+            <div className="nav-buttons">
+              <button
+                onClick={() => setActiveTab('dashboard')}
+                className={`nav-button ${
+                  activeTab === 'dashboard' 
+                    ? 'bg-orange-600 text-white' 
+                    : 'text-gray-300 hover:text-white hover:bg-gray-700'
+                }`}
+              >
+                <BarChart3 size={16} className="nav-icon" />
+                <span className="nav-text">Dashboard</span>
+              </button>
+              
+              <button
+                onClick={() => setActiveTab('clients')}
+                className={`nav-button ${
+                  activeTab === 'clients' 
+                    ? 'bg-orange-600 text-white' 
+                    : 'text-gray-300 hover:text-white hover:bg-gray-700'
+                }`}
+              >
+                <Users size={16} className="nav-icon" />
+                <span className="nav-text">Clienti</span>
+              </button>
+              
+              <button
+                onClick={() => setActiveTab('tasks')}
+                className={`nav-button ${
+                  activeTab === 'tasks' 
+                    ? 'bg-orange-600 text-white' 
+                    : 'text-gray-300 hover:text-white hover:bg-gray-700'
+                }`}
+              >
+                <Calendar size={16} className="nav-icon" />
+                <span className="nav-text">Attività</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </nav>
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -763,6 +811,7 @@ const TimeTrackingApp: React.FC = () => {
                   onClick={handleClientSubmit}
                   className="flex-1 btn-primary"
                 >
+                  {editingClient ? 'Aggiorna Cliente' : 'Crea Cliente'}
                 </button>
                 <button
                   onClick={() => {
@@ -905,14 +954,14 @@ const TimeTrackingApp: React.FC = () => {
                 </div>
               ) : (
                 <div className="space-y-3">
-                  {reports.map((report: any) => {
+                  {reports.map((report) => {
                     const client = clients.find(c => c.id === report.client_id);
                     return (
                       <div key={report.id} className="bg-gray-700 rounded-lg p-4 flex items-center justify-between hover:bg-gray-600 transition-colors">
                         <div className="flex items-center gap-3">
                           <div className="w-4 h-4 rounded-full" style={{ backgroundColor: client?.color }}></div>
                           <div>
-                            <div className="text-white font-medium">{client?.name}</div>
+                            <div className="text-white font-medium">{client?.name || report.report_data?.client_name}</div>
                             <div className="text-gray-400 text-sm">
                               {new Date(0, report.month).toLocaleDateString('it-IT', { month: 'long' })} {report.year} - {report.total_hours}h
                             </div>
