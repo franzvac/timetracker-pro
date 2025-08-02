@@ -517,11 +517,13 @@ const TimeTrackingApp: React.FC = () => {
           className="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
         >
           <PlusCircle size={20} />
-          Aggiungi Cliente
+          <span className="hidden sm:inline">Aggiungi Cliente</span>
+          <span className="sm:hidden">+</span>
         </button>
       </div>
 
-      <div className="bg-gray-800 rounded-lg overflow-hidden">
+      {/* Desktop Table - nascosta su mobile */}
+      <div className="mobile-table-hidden bg-gray-800 rounded-lg overflow-hidden">
         <table className="table">
           <thead>
             <tr>
@@ -583,7 +585,7 @@ const TimeTrackingApp: React.FC = () => {
                       <button
                         onClick={() => deleteClient(client.id)}
                         className="text-red-400 hover:text-red-300 p-1"
-                        title="Elimina attività"
+                        title="Elimina cliente"
                       >
                         <Trash2 size={16} />
                       </button>
@@ -595,9 +597,114 @@ const TimeTrackingApp: React.FC = () => {
           </tbody>
         </table>
       </div>
+
+      {/* Mobile Cards - visibili solo su mobile */}
+      <div className="mobile-cards-container">
+        {clients.map(client => {
+          const monthlyHours = getMonthlyHours(client.id);
+          const target = getMonthlyTarget(client.hours_per_week);
+          const percentage = Math.min((monthlyHours / target) * 100, 100);
+          
+          // Determina il badge status
+          let badgeClass = "completed";
+          let badgeText = "OK";
+          if (percentage > 90) {
+            badgeClass = "warning";
+            badgeText = "Limite";
+          } else if (percentage > 70) {
+            badgeClass = "in-progress";
+            badgeText = "In corso";
+          }
+          
+          return (
+            <div key={client.id} className="mobile-client-card">
+              {/* Badge Status */}
+              <div className={`mobile-card-badge ${badgeClass}`}>
+                {badgeText}
+              </div>
+
+              {/* Header */}
+              <div className="mobile-card-header">
+                <div className="mobile-card-client">
+                  <div 
+                    className="mobile-card-client-dot" 
+                    style={{ backgroundColor: client.color }}
+                  ></div>
+                  <span className="mobile-card-client-name">{client.name}</span>
+                </div>
+                <span className="mobile-card-contract">
+                  €{client.contract.toLocaleString('it-IT')}/mese
+                </span>
+              </div>
+
+              {/* Progress Info */}
+              <div className="mobile-card-info">
+                <div className="mobile-card-hours">
+                  {client.hours_per_week}h/sett
+                </div>
+                <div className="mobile-card-progress">
+                  <div className="mobile-card-progress-bar">
+                    <div 
+                      className="mobile-card-progress-fill"
+                      style={{ 
+                        width: `${percentage}%`,
+                        backgroundColor: client.color
+                      }}
+                    ></div>
+                  </div>
+                  <div className="mobile-card-progress-text">
+                    {monthlyHours.toFixed(1)}/{target}h questo mese
+                  </div>
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div className="mobile-card-actions">
+                <button
+                  onClick={() => generateReport(client.id)}
+                  className="mobile-card-action report"
+                >
+                  <Download size={16} />
+                  <span className="text-sm font-medium">Report</span>
+                </button>
+                <button
+                  onClick={() => {
+                    setEditingClient(client);
+                    setClientForm({ 
+                      name: client.name, 
+                      contract: client.contract.toString(), 
+                      hours_per_week: client.hours_per_week.toString(), 
+                      color: client.color 
+                    });
+                    setShowClientForm(true);
+                  }}
+                  className="mobile-card-action edit"
+                  title="Modifica"
+                >
+                  <Edit size={18} />
+                </button>
+                <button
+                  onClick={() => deleteClient(client.id)}
+                  className="mobile-card-action delete"
+                  title="Elimina"
+                >
+                  <Trash2 size={18} />
+                </button>
+              </div>
+            </div>
+          );
+        })}
+        
+        {clients.length === 0 && (
+          <div className="text-center py-12 text-gray-400">
+            <Users size={48} className="mx-auto mb-4 opacity-50" />
+            <p className="text-lg font-medium mb-2">Nessun cliente registrato</p>
+            <p className="text-sm">Inizia aggiungendo il tuo primo cliente</p>
+          </div>
+        )}
+      </div>
     </div>
   );
-
 
   // Tasks Component
   const Tasks = () => (
@@ -609,11 +716,13 @@ const TimeTrackingApp: React.FC = () => {
           className="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
         >
           <PlusCircle size={20} />
-          Aggiungi Attività
+          <span className="hidden sm:inline">Aggiungi Attività</span>
+          <span className="sm:hidden">+</span>
         </button>
       </div>
 
-      <div className="bg-gray-800 rounded-lg overflow-hidden">
+      {/* Desktop Table - nascosta su mobile */}
+      <div className="mobile-table-hidden bg-gray-800 rounded-lg overflow-hidden">
         <table className="table">
           <thead>
             <tr>
@@ -673,9 +782,85 @@ const TimeTrackingApp: React.FC = () => {
           </tbody>
         </table>
       </div>
+
+      {/* Mobile Cards - visibili solo su mobile */}
+      <div className="mobile-cards-container">
+        {tasks.map(task => {
+          const client = clients.find(c => c.id === task.client_id);
+          return (
+            <div key={task.id} className="mobile-task-card">
+              {/* Header */}
+              <div className="mobile-card-header">
+                <div className="mobile-card-client">
+                  <div 
+                    className="mobile-card-client-dot" 
+                    style={{ backgroundColor: client?.color }}
+                  ></div>
+                  <span className="mobile-card-client-name">{client?.name}</span>
+                </div>
+                <span className="mobile-card-date">
+                  {new Date(task.date).toLocaleDateString('it-IT')}
+                </span>
+              </div>
+
+              {/* Body */}
+              <div className="mobile-card-body">
+                <h3 className="mobile-card-title">{task.title}</h3>
+                {task.description && (
+                  <p className="mobile-card-description text-truncate-mobile">
+                    {task.description}
+                  </p>
+                )}
+              </div>
+
+              {/* Info */}
+              <div className="mobile-card-info">
+                <div className="mobile-card-hours">
+                  {task.hours}h
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div className="mobile-card-actions">
+                <button
+                  onClick={() => {
+                    setEditingTask(task);
+                    setTaskForm({
+                      client_id: task.client_id.toString(),
+                      title: task.title,
+                      hours: task.hours.toString(),
+                      date: task.date,
+                      description: task.description
+                    });
+                    setShowTaskForm(true);
+                  }}
+                  className="mobile-card-action edit"
+                  title="Modifica"
+                >
+                  <Edit size={18} />
+                </button>
+                <button
+                  onClick={() => deleteTask(task.id)}
+                  className="mobile-card-action delete"
+                  title="Elimina"
+                >
+                  <Trash2 size={18} />
+                </button>
+              </div>
+            </div>
+          );
+        })}
+        
+        {tasks.length === 0 && (
+          <div className="text-center py-12 text-gray-400">
+            <Calendar size={48} className="mx-auto mb-4 opacity-50" />
+            <p className="text-lg font-medium mb-2">Nessuna attività registrata</p>
+            <p className="text-sm">Inizia aggiungendo la tua prima attività</p>
+          </div>
+        )}
+      </div>
     </div>
   );
-
 
   return (
     <div className="min-h-screen bg-gray-900">
