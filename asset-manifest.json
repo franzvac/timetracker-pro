@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/timetracker-pro/static/css/main.ae818580.css",
-    "main.js": "/timetracker-pro/static/js/main.d2f50eb3.js",
+    "main.js": "/timetracker-pro/static/js/main.b98bcdbb.js",
     "index.html": "/timetracker-pro/index.html",
     "main.ae818580.css.map": "/timetracker-pro/static/css/main.ae818580.css.map",
-    "main.d2f50eb3.js.map": "/timetracker-pro/static/js/main.d2f50eb3.js.map"
+    "main.b98bcdbb.js.map": "/timetracker-pro/static/js/main.b98bcdbb.js.map"
   },
   "entrypoints": [
     "static/css/main.ae818580.css",
-    "static/js/main.d2f50eb3.js"
+    "static/js/main.b98bcdbb.js"
   ]
 }
